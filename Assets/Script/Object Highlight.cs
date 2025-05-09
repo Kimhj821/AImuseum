@@ -2,22 +2,30 @@ using UnityEngine;
 
 public class ObjectHighlight : MonoBehaviour
 {
-    public Material normalMat;
-    public Material highlightedMat;
-    private MeshRenderer meshRenderer;
+    public Color normalColor = Color.white;
+    public Color highlightColor = Color.yellow;
+
+    private Material instanceMat;
 
     void Start()
     {
-        meshRenderer = GetComponent<MeshRenderer>(); //컴포넌트 가지고 오기
+        MeshRenderer renderer = GetComponent<MeshRenderer>();
+
+        // ✨ 기존 머티리얼을 복제해서 인스턴스 생성
+        instanceMat = new Material(renderer.sharedMaterial);
+        renderer.material = instanceMat;
+
+        instanceMat.color = normalColor;
     }
 
     public void OnHoverEnter()
     {
-        meshRenderer.material = highlightedMat; //닿으면 highlightedMat 
+        Debug.Log("Hover 됨!");
+        instanceMat.color = highlightColor;
     }
 
     public void OnHoverExit()
     {
-        meshRenderer.material = normalMat; //떼면 다시 원상 복구
+        instanceMat.color = normalColor;
     }
 }
