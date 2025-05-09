@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 public class InputValue : MonoBehaviour
 {
@@ -9,11 +10,17 @@ public class InputValue : MonoBehaviour
     public Animator lAnim;
     public Animator rAnim;
 
+    public XRRayInteractor leftRay;
+    public XRRayInteractor rightRay;
+
     // 실행 시 한 번만 찾아오고 계속 재사용
     private InputAction leftGrip;
     private InputAction leftTrigger;
     private InputAction rightGrip;
     private InputAction rightTrigger;
+
+
+    [Range(0f, 1f)] public float fistThreshold = 0.1f;
 
     void Start()
     {
@@ -42,10 +49,20 @@ public class InputValue : MonoBehaviour
         lAnim.SetFloat("Grip", leftGripValue);
         lAnim.SetFloat("Trigger", leftTriggerValue);
 
+        bool isLeftFist = leftTriggerValue > fistThreshold;
+        if (leftRay != null) leftRay.enabled = !isLeftFist;
+
+
         // 오른손 애니메이션 값 설정
         float rightGripValue = rightGrip.ReadValue<float>();
         float rightTriggerValue = rightTrigger.ReadValue<float>();
         rAnim.SetFloat("RightGrip", rightGripValue);
         rAnim.SetFloat("RightTrigger", rightTriggerValue);
+
+        bool isRightFist = rightTriggerValue > fistThreshold;
+        if (rightRay != null) rightRay.enabled = !isRightFist;
+
+
+        
     }
 }

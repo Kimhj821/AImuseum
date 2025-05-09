@@ -8,16 +8,16 @@ public class ObjectHighlight : MonoBehaviour
 
     void Start()
     {
-        meshRenderer = GetComponent<MeshRenderer>();
+        meshRenderer = GetComponent<MeshRenderer>(); //컴포넌트 가지고 오기
     }
 
     public void OnHoverEnter()
     {
-        meshRenderer.material = highlightedMat;
+        meshRenderer.material = highlightedMat; //닿으면 highlightedMat 
     }
 
     public void OnHoverExit()
     {
-        meshRenderer.material = normalMat;
+        meshRenderer.material = normalMat; //떼면 다시 원상 복구
     }
 }
