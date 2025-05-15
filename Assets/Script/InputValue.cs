@@ -24,7 +24,7 @@ public class InputValue : MonoBehaviour
     private InputAction leftSelectAction;
     private InputAction rightSelectAction;
 
-
+    public int choice = 0;
     [Range(0f, 1f)] public float fistThreshold = 0.1f;
 
     void Start()
@@ -52,6 +52,8 @@ public class InputValue : MonoBehaviour
         //select 활성화
         leftSelectAction.Enable();
         rightSelectAction.Enable();
+
+        
     }
 
     void Update()
@@ -87,21 +89,40 @@ public class InputValue : MonoBehaviour
         //왼손
         if (leftHoveredObject != null && isLeftSelected)
         {
+            var renderer = leftHoveredObject.transform.GetComponent<MeshRenderer>();
+
+            if (renderer != null)
+            {
+                Material instanceMat = new Material(renderer.material); // 복제해서 분리
+                instanceMat.color = Color.yellow; // Base Map 색상 변경
+                renderer.material = instanceMat;
+            }
+
             var room = leftHoveredObject.transform.GetComponent<RoomTeleport>(); // 커스텀 스크립트
             if (room != null)
                 FadeManager.Instance.FadeAndMoveTo(room.targetPosition);
-            Debug.Log("눌림");
+            
         }
 
         //오른손
         if (rightHoveredObject != null && isRightSelected)
         {
+            // 머티리얼 색상을 노란색으로 변경
+            var renderer = rightHoveredObject.transform.GetComponent<MeshRenderer>();
+            if (renderer != null)
+            {
+             Material instanceMat = new Material(renderer.material); // 복제해서 분리
+             instanceMat.color = Color.yellow; // Base Map 색상 변경
+             renderer.material = instanceMat;
+            }
+
             var room = rightHoveredObject.transform.GetComponent<RoomTeleport>();
             if (room != null)
                 FadeManager.Instance.FadeAndMoveTo(room.targetPosition);
-            Debug.Log("눌림");
+            
         }
         
         
     }
+
 }

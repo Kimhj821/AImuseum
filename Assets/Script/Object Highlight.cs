@@ -1,31 +1,29 @@
 using UnityEngine;
-
+using System.Collections.Generic;
 public class ObjectHighlight : MonoBehaviour
 {
-    public Color normalColor = Color.white;
-    public Color highlightColor = Color.yellow;
+    public Material outlineMaterial;  // 외곽선 머티리얼
+    private Renderer rend;
 
-    private Material instanceMat;
+    private Material[] OriginalInstanceMat;
 
     void Start()
     {
-        MeshRenderer renderer = GetComponent<MeshRenderer>();
-
-        // ✨ 기존 머티리얼을 복제해서 인스턴스 생성
-        instanceMat = new Material(renderer.sharedMaterial);
-        renderer.material = instanceMat;
-
-        instanceMat.color = normalColor;
+        rend = GetComponent<Renderer>();
+        OriginalInstanceMat = rend.materials;
     }
+
+   
 
     public void OnHoverEnter()
     {
-        Debug.Log("Hover 됨!");
-        instanceMat.color = highlightColor;
+        var newMaterials = new List<Material>(OriginalInstanceMat);
+        newMaterials.Add(outlineMaterial);
+        rend.materials = newMaterials.ToArray();
     }
 
     public void OnHoverExit()
     {
-        instanceMat.color = normalColor;
+        rend.materials = OriginalInstanceMat;
     }
 }
