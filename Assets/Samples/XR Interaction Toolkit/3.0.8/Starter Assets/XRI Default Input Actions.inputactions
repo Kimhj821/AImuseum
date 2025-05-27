@@ -2002,6 +2002,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "BbuttonAction",
+                    "type": "Button",
+                    "id": "cc33adee-6fee-4e5b-904a-7a49ba5e89c5",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -2244,6 +2253,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Select",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1c38ce0a-779d-4a4b-a5ac-1363270f9704",
+                    "path": "<XRController>{RightHand}/{SecondaryButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BbuttonAction",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
