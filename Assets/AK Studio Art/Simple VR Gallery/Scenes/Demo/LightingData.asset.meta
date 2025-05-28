@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: fd0555278d538ef4db6bc43da9de0f41
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 112000000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 230485
+  packageName: Simple VR Gallery
+  packageVersion: 1.0
+  assetPath: Assets/AK Studio Art/Simple VR Gallery/Scenes/Demo/LightingData.asset
+  uploadId: 602141

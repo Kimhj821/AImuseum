@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 253b9dccbb1ba2444a104ab0af1ee872
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 230485
+  packageName: Simple VR Gallery
+  packageVersion: 1.0
+  assetPath: Assets/AK Studio Art/Simple VR Gallery/Settings/HDRP/Render Pipeline
+    HDRP.asset
+  uploadId: 602141

@@ -1,29 +1,31 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 public class ObjectHighlight : MonoBehaviour
 {
-    public Material outlineMaterial;  // 외곽선 머티리얼
+    public Material outlineMaterial;
+    
     private Renderer rend;
 
-    private Material[] OriginalInstanceMat;
+    private Material[] originalMaterials;
 
     void Start()
     {
         rend = GetComponent<Renderer>();
-        OriginalInstanceMat = rend.materials;
+        originalMaterials = rend.materials;
     }
-
-   
 
     public void OnHoverEnter()
     {
-        var newMaterials = new List<Material>(OriginalInstanceMat);
-        newMaterials.Add(outlineMaterial);
-        rend.materials = newMaterials.ToArray();
+        var newMat = new List<Material>(originalMaterials);
+        newMat.Add(outlineMaterial);
+        rend.materials = newMat.ToArray();
     }
 
     public void OnHoverExit()
     {
-        rend.materials = OriginalInstanceMat;
+        rend.materials = originalMaterials;
     }
+    
+    
 }

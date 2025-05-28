@@ -29,7 +29,7 @@ public class FadeManager : MonoBehaviour
         // 1. 화면 어둡게
         fadeAnimator.SetTrigger("fadeOut");
 
-        // 2. 1초 대기 (애니메이션 길이만큼)
+        // 2. n초 대기 (애니메이션 길이만큼)
         yield return new WaitForSeconds(5f);
 
         // 3. XR Origin 위치 이동
