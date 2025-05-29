@@ -21,7 +21,7 @@ public class VoiceInteraction : MonoBehaviour
     private volatile bool isRecording = false;
 
     [SerializeField]
-    public string elevenApiKey = "";
+    private string elevenApiKey = "";
     
     [SerializeField]
     private string openAiApiKey = "";
@@ -149,25 +149,34 @@ public class VoiceInteraction : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
 
         string prompt = File.ReadAllText(textPath);
-        yield return StartCoroutine(SendToGPT(prompt));
 
-        yield return new WaitForSeconds(0.2f);
-
-        string gptResponse = File.ReadAllText(textPath);
-        yield return StartCoroutine(SendToTTS(gptResponse));
-
-        // 파일이 준비될 때까지 대기
-        float timeout = 2f;
-        float elapsed = 0f;
-        while (!IsFileReady(ttsPath) && elapsed < timeout)
+        // 🔥 여기에서 키워드 감지 및 DALL-E 호출 분기 추가
+        if (prompt.Contains("방을 꾸며줘"))  // 또는 prompt.ToLower().Contains("방 꾸며")
         {
-            yield return new WaitForSeconds(0.1f);
-            elapsed += 0.1f;
+            Debug.Log("DALL-E 이미지 생성 흐름으로 전환");
+            var dalleScript = GameObject.Find("DalleEGeneratorObject").GetComponent<DalleEImageGenerator>();
         }
+        else
+        {
+            Debug.Log("GPT 설명 흐름 시작");
+            yield return StartCoroutine(SendToGPT(prompt));
+
+            yield return new WaitForSeconds(0.2f);
+
+            string gptResponse = File.ReadAllText(textPath);
+            yield return StartCoroutine(SendToTTS(gptResponse));
+
+            float timeout = 2f;
+            float elapsed = 0f;
+            while (!IsFileReady(ttsPath) && elapsed < timeout)
+            {
+                yield return new WaitForSeconds(0.1f);
+                elapsed += 0.1f;
+            }
 
         PlayAudio(ttsPath);
+        }
     }
-
     IEnumerator SendToSTT()
     {
         byte[] audioData = File.ReadAllBytes(sttPath);

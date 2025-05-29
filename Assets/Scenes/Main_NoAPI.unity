@@ -2695,7 +2695,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 783366325}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 53fd7e1abf3bc5b408cc3b1e1a4bbe36, type: 3}
   m_Name: 
@@ -2913,6 +2913,7 @@ GameObject:
   m_Component:
   - component: {fileID: 918156946}
   - component: {fileID: 918156945}
+  - component: {fileID: 918156947}
   m_Layer: 0
   m_Name: API_Management
   m_TagString: Untagged
@@ -2932,9 +2933,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f13a113d03615114cb84f29dba114d19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  elevenApiKey: sk_6299246a77270af06db01a3d002ace27dd5c55ac71cfc384
-  openAiApiKey: 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
-  elevenVoiceId: 7Nah3cbXKVmGX7gQUuwz
+  elevenApiKey: 
+  openAiApiKey: 
+  elevenVoiceId: 
   Voice: 0
   gptLegacyText: {fileID: 1100760779}
   inputAsset: {fileID: -944628639613478452, guid: c348712bda248c246b8c49b3db54643f, type: 3}
@@ -2954,6 +2955,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1875507090}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &918156947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 918156944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d68f61f4b77b8648892f15f34fac67b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  openAiApiKey: 
 --- !u!4 &927094572 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -5644888990184678444, guid: 56186ccf27ad7864681108ed88349071, type: 3}
