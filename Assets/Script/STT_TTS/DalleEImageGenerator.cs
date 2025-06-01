@@ -7,49 +7,47 @@ using Newtonsoft.Json;
 
 public class DalleEImageGenerator : MonoBehaviour
 {
-    [SerializeField] private string openAiApiKey = "YOUR_API_KEY";// open API 키값을 받는 변수
-
-    void Start()
-    {
-        string prompt = "A seamless panoramic texture for an Imjin War scene, with vivid historical Korean architecture, dramatic lighting, and high detail";  
-        StartCoroutine(GenerateImages(prompt));
-    }
-
     public IEnumerator GenerateImages(string prompt)
     {
-        var payload = new
+        string[] locationSuffixes = { "바닥", "천장", "정면", "후면", "좌측", "우측" };
+
+        for (int i = 0; i < 6; i++)
         {
-            model = "dall-e-3",  // 또는 "gpt-image-1"
-            prompt = prompt,
-            n = 6,  // 6장 요청
-            size = "512x512"
-        };
+            string specificPrompt = $"{prompt} - {locationSuffixes[i]}";
 
-        string jsonPayload = JsonConvert.SerializeObject(payload);
-
-        UnityWebRequest request = new UnityWebRequest("https://api.openai.com/v1/images/generations", "POST");
-        request.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(jsonPayload));
-        request.downloadHandler = new DownloadHandlerBuffer();
-        request.SetRequestHeader("Authorization", $"Bearer {openAiApiKey}");
-        request.SetRequestHeader("Content-Type", "application/json");
-
-        yield return request.SendWebRequest();
-
-        if (request.result == UnityWebRequest.Result.Success)
-        {
-            JObject result = JObject.Parse(request.downloadHandler.text);
-            JArray images = (JArray)result["data"];
-
-            for (int i = 0; i < images.Count; i++)
+            var payload = new
             {
-                string imageUrl = images[i]["url"]?.ToString();
-                Debug.Log($"Image {i+1} URL: {imageUrl}");
-                StartCoroutine(DownloadAndApplyTexture(imageUrl, i));
+                prompt = specificPrompt,
+                n = 1,  // 각 요청당 1장 생성 (DALL-E 2는 여러 장 요청 가능하나, 위치별로 1장씩 처리)
+                size = "512x512"  // DALL-E 2는 512x512 지원
+            };
+
+            string jsonPayload = JsonConvert.SerializeObject(payload);
+
+            UnityWebRequest request = new UnityWebRequest("https://api.openai.com/v1/images/generations", "POST");
+            request.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(jsonPayload));
+            request.downloadHandler = new DownloadHandlerBuffer();
+            request.SetRequestHeader("Authorization", $"Bearer {ApiKeyLoader.OpenAiApiKey}");
+            request.SetRequestHeader("Content-Type", "application/json");
+
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                JObject result = JObject.Parse(request.downloadHandler.text);
+                JArray images = (JArray)result["data"];
+
+                if (images.Count > 0)
+                {
+                    string imageUrl = images[0]["url"]?.ToString();
+                    Debug.Log($"Image {i + 1} URL: {imageUrl}");
+                    yield return StartCoroutine(DownloadAndApplyTexture(imageUrl, i));
+                }
             }
-        }
-        else
-        {
-            Debug.LogError($"DALL-E Error: {request.responseCode} - {request.error} - {request.downloadHandler.text}");
+            else
+            {
+                Debug.LogError($"DALL-E 2 Error: {request.responseCode} - {request.error} - {request.downloadHandler.text}");
+            }
         }
     }
 
@@ -75,9 +73,9 @@ public class DalleEImageGenerator : MonoBehaviour
 
     string GetObjectNameForIndex(int index)
     {
-        switch(index)
+        switch (index)
         {
-            case 0: return "Floor";
+            case 0: return "FloorWall";
             case 1: return "Ceiling";
             case 2: return "FrontWall";
             case 3: return "BackWall";
@@ -87,3 +85,44 @@ public class DalleEImageGenerator : MonoBehaviour
         }
     }
 }
+// using UnityEngine;
+// // using UnityEngine.Networking;
+// using System.Collections.Generic;
+// // using System.Text;
+// // using Newtonsoft.Json.Linq;
+// // using Newtonsoft.Json;
+
+// public class DalleEImageGenerator : MonoBehaviour
+// {
+//     public List<GameObject> Walls;
+//     public void SetWallsToRed()
+//     {
+//         // // Wall 이름 배열
+//         // string[] wallNames = { "FloorWall", "Ceiling", "FrontWall", "BackWall", "LeftWall", "RightWall" };
+        
+//         // // 모든 Wall 오브젝트를 찾아서 Material 색상을 빨간색으로 변경
+//         // foreach (string wallName in wallNames)
+//         // {
+
+//         //     if (wallObject != null)
+//         //     {
+//         //         //Renderer mat = wallObject.GetComponent<Material>();
+//         //         if (GetComponent<Renderer>() != null)
+//         //         {
+//         //             //mat.material.color = Color.red;
+//         //         }
+//         //     }
+//         //     else
+//         //     {
+//         //         Debug.LogWarning($"{wallName} 오브젝트를 찾을 수 없습니다.");
+//         //     }
+//         // }
+
+//         for (int i = 0; i < Walls.Count; i++)
+//         {
+//             var WallRenderer = Walls[i].GetComponent<Renderer>();
+//             WallRenderer.material.color = Color.red;
+//         }
+//     }
+// }
+ 
