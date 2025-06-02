@@ -9,9 +9,9 @@ public class DalleEImageGenerator : MonoBehaviour
 {
     public IEnumerator GenerateImages(string prompt)
     {
-        string[] locationSuffixes = { "바닥", "천장", "정면", "후면", "좌측", "우측" };
+        string[] locationSuffixes = {"천장", "정면", "후면", "좌측", "우측" };
 
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < 5; i++)
         {
             string specificPrompt = $"{prompt} - {locationSuffixes[i]}";
 
@@ -75,12 +75,11 @@ public class DalleEImageGenerator : MonoBehaviour
     {
         switch (index)
         {
-            case 0: return "FloorWall";
-            case 1: return "Ceiling";
-            case 2: return "FrontWall";
-            case 3: return "BackWall";
-            case 4: return "LeftWall";
-            case 5: return "RightWall";
+            case 0: return "Ceiling";
+            case 1: return "FrontWall";
+            case 2: return "BackWall";
+            case 3: return "LeftWall";
+            case 4: return "RightWall";
             default: return "Unknown";
         }
     }

@@ -25,6 +25,8 @@ public class InputValue : MonoBehaviour
     private InputAction rightSelectAction;
 
     public int choice = 0;
+
+    public int PlayerNum = 0;
     [Range(0f, 1f)] public float fistThreshold = 0.1f;
 
     void Start()
