@@ -109,37 +109,32 @@ public class VoiceInteraction : MonoBehaviour
         string sttPrompt = File.ReadAllText(textPath).Trim();
         Debug.Log("STT 결과: " + sttPrompt);
 
-        // 2️⃣ GPT 호출 (AI 응답 생성 - 한글)
+        // 2️⃣ GPT 호출 (한국어 응답 생성)
         yield return StartCoroutine(SendToGPT(sttPrompt));
         if (!File.Exists(textPath)) yield break;
         string gptResponseKorean = File.ReadAllText(textPath).Trim();
         Debug.Log("GPT 응답(한글): " + gptResponseKorean);
 
-        // 3️⃣ TTS (GPT 응답(한글) 음성 출력)
-        yield return StartCoroutine(SendToTTS(gptResponseKorean));
-        PlayAudio(ttsPath);
-
-        // 4️⃣ 한글 응답을 GPT에 영어로 번역 요청
-        string translationPrompt = $"다음을 영어로 번역해줘:\n{gptResponseKorean}";
-        yield return StartCoroutine(SendToGPT(translationPrompt));
-        if (!File.Exists(textPath)) yield break;
-        string gptResponseEnglish = File.ReadAllText(textPath).Trim();
-        Debug.Log("GPT 응답(영어): " + gptResponseEnglish);
-
-        // 5️⃣ GPT 응답(영어)에서 DALL-E 프롬프트 생성 (방/인테리어/실내 관련 문장만)
-        string dallePrompt = string.Join(" ", gptResponseEnglish.Split('.')
-            .Where(sentence => sentence.Contains("room") || sentence.Contains("interior") || sentence.Contains("inside"))
-            .Select(sentence => sentence.Trim())) + ".";
-
-        if (!string.IsNullOrWhiteSpace(dallePrompt))
+        // 3️⃣ (Call_Dall-E) 포함 여부 확인
+        if (gptResponseKorean.Contains("(Call_Dall-E)"))
         {
-            Debug.Log("🎨 DALL-E 이미지 생성 흐름으로 전환");
-            Debug.Log($"DALL-E 프롬프트: {dallePrompt}");
+            Debug.Log("🎨 DALL-E 호출 플로우로 전환");
 
+            // (Call_Dall-E) 제거한 응답 추출
+            string dalleKorean = gptResponseKorean.Replace("(Call_Dall-E)", "").Trim();
+
+            // GPT에 영어로 번역 요청
+            string translationPrompt = $"다음을 영어로 번역해줘:\n{dalleKorean}";
+            yield return StartCoroutine(SendToGPT(translationPrompt));
+            if (!File.Exists(textPath)) yield break;
+            string gptResponseEnglish = File.ReadAllText(textPath).Trim();
+            Debug.Log("GPT 응답(영어): " + gptResponseEnglish);
+
+            // DALL-E 호출
             var dalleScript = FindFirstObjectByType<DalleEImageGenerator>();
             if (dalleScript != null)
             {
-                StartCoroutine(dalleScript.GenerateImages(dallePrompt));
+                StartCoroutine(dalleScript.GenerateImages(gptResponseEnglish));
             }
             else
             {
@@ -148,9 +143,15 @@ public class VoiceInteraction : MonoBehaviour
         }
         else
         {
-            Debug.Log("🎤 TTS 응답만으로 종료 (이미지 생성 X)");
+            Debug.Log("🎤 TTS 및 UI 텍스트 출력 플로우 진행");
+
+            // TTS 출력 및 UI 업데이트
+            if (gptLegacyText != null) gptLegacyText.text = gptResponseKorean;
+            yield return StartCoroutine(SendToTTS(gptResponseKorean));
+            PlayAudio(ttsPath);
         }
     }
+
 
     // IEnumerator ProcessAudioFlow()
     // {
