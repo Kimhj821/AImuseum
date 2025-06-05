@@ -3312,7 +3312,6 @@ GameObject:
   - component: {fileID: 6571271378004224373}
   - component: {fileID: 7299913329655966888}
   - component: {fileID: 8964490759176729504}
-  - component: {fileID: 7844154578900292888}
   m_Layer: 0
   m_Name: Guide_Robot
   m_TagString: Untagged
@@ -3328,10 +3327,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6634204648784341553}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.18393, y: 0.02, z: -0.0021059}
-  m_LocalScale: {x: 40, y: 40, z: 40}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 5193428442715991144}
   m_Father: {fileID: 0}
@@ -3403,27 +3402,6 @@ MonoBehaviour:
   rotationSpeed: 5
   startupDelay: 5
   speed: 0
---- !u!114 &7844154578900292888
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6634204648784341553}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad690a259660e78448102ead5611dca4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  robot: {fileID: 3713431455923706436}
-  mainCamera: {fileID: 0}
-  uiElement: {fileID: 0}
-  minScale: 0
-  maxScale: 1.5
-  baseYOffset: 1500
-  minDistance: 2
-  maxDistance: 25
-  smoothSpeed: 15
 --- !u!1 &6786645736459714980
 GameObject:
   m_ObjectHideFlags: 0
