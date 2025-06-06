@@ -3096,15 +3096,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1119830580891669312, guid: 15c612d55f9966a4c9ae53a3e499894e, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.002
+      value: 0.0018
       objectReference: {fileID: 0}
     - target: {fileID: 1119830580891669312, guid: 15c612d55f9966a4c9ae53a3e499894e, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.002
+      value: 0.0018
       objectReference: {fileID: 0}
     - target: {fileID: 1119830580891669312, guid: 15c612d55f9966a4c9ae53a3e499894e, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.002
+      value: 0.0018
       objectReference: {fileID: 0}
     - target: {fileID: 1119830580891669312, guid: 15c612d55f9966a4c9ae53a3e499894e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3154,6 +3154,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1859938311352505319, guid: 15c612d55f9966a4c9ae53a3e499894e, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1859938311352505319, guid: 15c612d55f9966a4c9ae53a3e499894e, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1859938311352505319, guid: 15c612d55f9966a4c9ae53a3e499894e, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1859938311352505319, guid: 15c612d55f9966a4c9ae53a3e499894e, type: 3}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1859938311352505319, guid: 15c612d55f9966a4c9ae53a3e499894e, type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1859938311352505319, guid: 15c612d55f9966a4c9ae53a3e499894e, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2403020003042250821, guid: 15c612d55f9966a4c9ae53a3e499894e, type: 3}
       propertyPath: m_Camera
       value: 
@@ -3161,6 +3185,10 @@ PrefabInstance:
     - target: {fileID: 2403020003042250821, guid: 15c612d55f9966a4c9ae53a3e499894e, type: 3}
       propertyPath: m_RenderMode
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3333193778117513558, guid: 15c612d55f9966a4c9ae53a3e499894e, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4830041510300289778, guid: 15c612d55f9966a4c9ae53a3e499894e, type: 3}
       propertyPath: m_IsActive
