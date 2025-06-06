@@ -24,9 +24,6 @@ public class InputValue : MonoBehaviour
     private InputAction leftSelectAction;
     private InputAction rightSelectAction;
 
-    public int choice = 0;
-
-    public int PlayerNum = 0;
     [Range(0f, 1f)] public float fistThreshold = 0.1f;
 
     void Start()
@@ -100,9 +97,18 @@ public class InputValue : MonoBehaviour
                 renderer.material = instanceMat;
             }
 
-            var room = leftHoveredObject.transform.GetComponent<RoomTeleport>(); // 커스텀 스크립트
-            if (room != null)
-                FadeManager.Instance.FadeAndMoveTo(room.targetPosition);
+            var teleport = leftHoveredObject.transform.GetComponent<RoomTeleport>(); // 커스텀 스크립트
+
+            if (teleport != null)//룸이 null이 아닐경우
+            {
+                if(teleport.linkedRoomInfo != null)
+                {
+                    RoomTeleport.CurrentRoomNumber = teleport.linkedRoomInfo.PlayerNum;
+                    Debug.Log($"✅ 플레이어 방 번호 갱신됨: {RoomTeleport.CurrentRoomNumber}번 방으로 이동");
+                }
+                    //FadeManager에 Instance의 FadeAndMoveTo함수가 호출되는 형식
+                FadeManager.Instance.FadeAndMoveTo(teleport.targetPosition);
+            }
             
         }
 
@@ -118,9 +124,19 @@ public class InputValue : MonoBehaviour
              renderer.material = instanceMat;
             }
 
-            var room = rightHoveredObject.transform.GetComponent<RoomTeleport>();
-            if (room != null)
-                FadeManager.Instance.FadeAndMoveTo(room.targetPosition);
+            var teleport = rightHoveredObject.transform.GetComponent<RoomTeleport>(); // 커스텀 스크립트
+
+            if (teleport != null)//룸이 null이 아닐경우
+            {
+                if(teleport.linkedRoomInfo != null)
+                {
+                    RoomTeleport.CurrentRoomNumber = teleport.linkedRoomInfo.PlayerNum;
+                    Debug.Log($"✅ 플레이어 방 번호 갱신됨: {RoomTeleport.CurrentRoomNumber}번 방으로 이동");
+                }
+                    //FadeManager에 Instance의 FadeAndMoveTo함수가 호출되는 형식
+                FadeManager.Instance.FadeAndMoveTo(teleport.targetPosition);
+            }
+            
             
         }
         

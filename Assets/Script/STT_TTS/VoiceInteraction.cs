@@ -115,30 +115,37 @@ public class VoiceInteraction : MonoBehaviour
         string gptResponseKorean = File.ReadAllText(textPath).Trim();
         Debug.Log("GPT 응답(한글): " + gptResponseKorean);
 
-        // 3️⃣ (Call_Dall-E) 포함 여부 확인
-        if (gptResponseKorean.Contains("(Call_Dall-E)"))
+       if (gptResponseKorean.Contains("(Call_Dall-E)"))
         {
-            Debug.Log("🎨 DALL-E 호출 플로우로 전환");
 
-            // (Call_Dall-E) 제거한 응답 추출
-            string dalleKorean = gptResponseKorean.Replace("(Call_Dall-E)", "").Trim();
+            GameObject currentRoom = GameObject.Find("SphereRoom" + RoomTeleport.CurrentRoomNumber);
 
-            // GPT에 영어로 번역 요청
-            string translationPrompt = $"다음을 영어로 번역해줘:\n{dalleKorean}";
-            yield return StartCoroutine(SendToGPT(translationPrompt));
-            if (!File.Exists(textPath)) yield break;
-            string gptResponseEnglish = File.ReadAllText(textPath).Trim();
-            Debug.Log("GPT 응답(영어): " + gptResponseEnglish);
-
-            // DALL-E 호출
-            var dalleScript = FindFirstObjectByType<DalleEImageGenerator>();
-            if (dalleScript != null)
+            RoomInfo roomInfo = currentRoom?.GetComponent<RoomInfo>();
+        if (roomInfo != null && roomInfo.PlayerNum == RoomTeleport.CurrentRoomNumber)
             {
-                StartCoroutine(dalleScript.GenerateImages(gptResponseEnglish));
+                Debug.Log("🎨 DALL-E 호출 플로우로 전환 (방 번호 확인 완료)");
+
+                string dalleKorean = gptResponseKorean.Replace("(Call_Dall-E)", "").Trim();
+                string translationPrompt = $"다음을 영어로 번역해줘:\n{dalleKorean}";
+
+                yield return StartCoroutine(SendToGPT(translationPrompt));
+                if (!File.Exists(textPath)) yield break;
+                string gptResponseEnglish = File.ReadAllText(textPath).Trim();
+                Debug.Log("GPT 응답(영어): " + gptResponseEnglish);
+
+                var dalleScript = FindFirstObjectByType<DalleEImageGenerator>();
+                if (dalleScript != null)
+                {
+                    StartCoroutine(dalleScript.GenerateImages(gptResponseEnglish));
+                }
+                else
+                {
+                    Debug.LogError("DalleEImageGenerator 스크립트를 찾을 수 없습니다.");
+                }
             }
             else
             {
-                Debug.LogError("DalleEImageGenerator 스크립트를 찾을 수 없습니다.");
+                Debug.Log($"⚠️ 현재 방 번호({RoomTeleport.CurrentRoomNumber})에서는 DALL-E 호출이 비활성화됨");
             }
         }
         else
@@ -146,7 +153,9 @@ public class VoiceInteraction : MonoBehaviour
             Debug.Log("🎤 TTS 및 UI 텍스트 출력 플로우 진행");
 
             // TTS 출력 및 UI 업데이트
+            // ✅ 여기서만 gptLegacyText 업데이트
             if (gptLegacyText != null) gptLegacyText.text = gptResponseKorean;
+
             yield return StartCoroutine(SendToTTS(gptResponseKorean));
             PlayAudio(ttsPath);
         }
@@ -227,7 +236,6 @@ public class VoiceInteraction : MonoBehaviour
         {
             string reply = JObject.Parse(request.downloadHandler.text)["choices"]?[0]?["message"]?["content"]?.ToString();
             File.WriteAllText(textPath, reply);
-            if (gptLegacyText != null) gptLegacyText.text = reply;
         }
     }
 
