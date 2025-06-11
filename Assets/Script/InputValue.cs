@@ -97,16 +97,19 @@ public class InputValue : MonoBehaviour
                 renderer.material = instanceMat;
             }
 
-            var teleport = leftHoveredObject.transform.GetComponent<RoomTeleport>(); // 커스텀 스크립트
-
-            if (teleport != null)//룸이 null이 아닐경우
+            var teleport = leftHoveredObject.transform.GetComponent<RoomTeleport>();
+            if (teleport != null)
             {
-                if(teleport.linkedRoomInfo != null)
+                if (teleport.linkedRoomInfo != null)
                 {
                     RoomTeleport.CurrentRoomNumber = teleport.linkedRoomInfo.PlayerNum;
                     Debug.Log($"✅ 플레이어 방 번호 갱신됨: {RoomTeleport.CurrentRoomNumber}번 방으로 이동");
+
+                    // ✅ 해당 방 번호에 맞는 유물만 활성화
+                    StartCoroutine(EnableRelicsAfterDelay(RoomTeleport.CurrentRoomNumber, 6f));
                 }
-                    //FadeManager에 Instance의 FadeAndMoveTo함수가 호출되는 형식
+
+                // ✅ 이동 처리
                 FadeManager.Instance.FadeAndMoveTo(teleport.targetPosition);
             }
             
@@ -124,16 +127,19 @@ public class InputValue : MonoBehaviour
                 renderer.material = instanceMat;
             }
 
-            var teleport = rightHoveredObject.transform.GetComponent<RoomTeleport>(); // 커스텀 스크립트
-
-            if (teleport != null)//룸이 null이 아닐경우
+            var teleport = rightHoveredObject.transform.GetComponent<RoomTeleport>();
+            if (teleport != null)
             {
-                if(teleport.linkedRoomInfo != null)
+                if (teleport.linkedRoomInfo != null)
                 {
                     RoomTeleport.CurrentRoomNumber = teleport.linkedRoomInfo.PlayerNum;
                     Debug.Log($"✅ 플레이어 방 번호 갱신됨: {RoomTeleport.CurrentRoomNumber}번 방으로 이동");
+
+                    // ✅ 해당 방 번호에 맞는 유물만 활성화
+                    StartCoroutine(EnableRelicsAfterDelay(RoomTeleport.CurrentRoomNumber, 6f));
                 }
-                    //FadeManager에 Instance의 FadeAndMoveTo함수가 호출되는 형식
+
+                // ✅ 이동 처리
                 FadeManager.Instance.FadeAndMoveTo(teleport.targetPosition);
             }
             
@@ -141,6 +147,11 @@ public class InputValue : MonoBehaviour
         }
         
         
+    }
+    private IEnumerator EnableRelicsAfterDelay(int roomNumber, float delaySeconds)
+    {
+        yield return new WaitForSeconds(delaySeconds);
+        RelicManager.Instance.EnableRelicByRoomNum(roomNumber);
     }
 
 }
