@@ -119,9 +119,9 @@ public class InputValue : MonoBehaviour
             var renderer = rightHoveredObject.transform.GetComponent<MeshRenderer>();
             if (renderer != null)
             {
-             Material instanceMat = new Material(renderer.material); // 복제해서 분리
-             instanceMat.color = Color.yellow; // Base Map 색상 변경
-             renderer.material = instanceMat;
+                Material instanceMat = new Material(renderer.material); // 복제해서 분리
+                instanceMat.color = Color.yellow; // Base Map 색상 변경
+                renderer.material = instanceMat;
             }
 
             var teleport = rightHoveredObject.transform.GetComponent<RoomTeleport>(); // 커스텀 스크립트
