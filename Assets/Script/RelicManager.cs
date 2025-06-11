@@ -1,10 +1,12 @@
 using UnityEngine;
+using System.Collections;
 
 public class RelicManager : MonoBehaviour
 {
     public static RelicManager Instance;
 
     public GameObject[] relics; // RelicsPedestal_1, _2, _3...
+     public GameObject[] pointLights;
 
     void Awake()
     {
@@ -25,4 +27,20 @@ public class RelicManager : MonoBehaviour
             }
         }
     }
+    // 🌟 추가: 포인트 라이트 활성화 (6초 후 실행됨)
+    
+    public void EnableLightByRoomNum(int roomNumber)
+    {
+
+        int index = roomNumber;  // 예: roomNumber 1이면 index 1 → PointLight_2
+        if (index >= 0 && index < pointLights.Length)
+        {
+            if (pointLights[index] != null && !pointLights[index].activeSelf)
+            {
+                pointLights[index].SetActive(true);
+            }
+        }
+    }
+
+    
 }

@@ -5085,6 +5085,10 @@ MonoBehaviour:
   - {fileID: 3151109795524974523}
   - {fileID: 1916767156}
   - {fileID: 260457037}
+  pointLights:
+  - {fileID: 95693183}
+  - {fileID: 245806462}
+  - {fileID: 1998925669}
 --- !u!4 &1264830486 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2835758823564002961, guid: 56186ccf27ad7864681108ed88349071, type: 3}
@@ -9526,6 +9530,10 @@ PrefabInstance:
     - target: {fileID: 11609542653790643, guid: 5dcefcc853eac384d97ea9b3cc70bfdb, type: 3}
       propertyPath: m_Name
       value: BackTellport
+      objectReference: {fileID: 0}
+    - target: {fileID: 11609542653790643, guid: 5dcefcc853eac384d97ea9b3cc70bfdb, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4442166408275200953, guid: 5dcefcc853eac384d97ea9b3cc70bfdb, type: 3}
       propertyPath: m_LocalPosition.x

@@ -152,6 +152,7 @@ public class InputValue : MonoBehaviour
     {
         yield return new WaitForSeconds(delaySeconds);
         RelicManager.Instance.EnableRelicByRoomNum(roomNumber);
+        RelicManager.Instance.EnableLightByRoomNum(roomNumber);
     }
 
 }
