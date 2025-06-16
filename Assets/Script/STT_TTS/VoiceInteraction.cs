@@ -25,12 +25,12 @@ public class VoiceInteraction : MonoBehaviour
     private InputAction bButtonAction;
 
     public GameObject D;
-    DalleEImageGenerator dalleScript;
+    ReplicateImageGenerator repliScript;
 
     void Start()
     {
         D = GameObject.Find("API_Management");
-        dalleScript = D.transform.GetComponent<DalleEImageGenerator>();
+        repliScript = D.transform.GetComponent<ReplicateImageGenerator>();
 
         folderPath = Path.Combine(Application.streamingAssetsPath);
         sttPath = Path.Combine(folderPath, "STT.wav");
@@ -125,18 +125,18 @@ public class VoiceInteraction : MonoBehaviour
             {
                 Debug.Log("🎨 DALL-E 호출 플로우로 전환 (방 번호 확인 완료)");
 
-                string dalleKorean = gptResponseKorean.Replace("(Call_Dall-E)", "").Trim();
-                string translationPrompt = $"다음을 영어로 번역해줘:\n{dalleKorean}";
+                string replicKorean = gptResponseKorean.Replace("(Call_Dall-E)", "").Trim();
+                string translationPrompt = $"다음을 영어로 번역해줘:\n{replicKorean}";
 
                 yield return StartCoroutine(SendToGPT(translationPrompt));
                 if (!File.Exists(textPath)) yield break;
                 string gptResponseEnglish = File.ReadAllText(textPath).Trim();
                 Debug.Log("GPT 응답(영어): " + gptResponseEnglish);
 
-                var dalleScript = FindFirstObjectByType<DalleEImageGenerator>();
-                if (dalleScript != null)
+                var repliScript = FindFirstObjectByType<ReplicateImageGenerator>();
+                if (repliScript != null)
                 {
-                    StartCoroutine(dalleScript.GenerateImages(gptResponseEnglish));
+                    StartCoroutine(repliScript.GenerateImages(gptResponseEnglish));
                 }
                 else
                 {

@@ -5,9 +5,10 @@ using System.Linq;
 
 public class ApiKeyLoader : MonoBehaviour
 {
-   public static string OpenAiApiKey { get; private set; }
+    public static string OpenAiApiKey { get; private set; }
     public static string ElevenApiKey { get; private set; }
     public static string ElevenVoiceId { get; private set; }
+    public static string ReplicateApiKey { get; private set; }
 
     void Awake()
     {
@@ -20,6 +21,7 @@ public class ApiKeyLoader : MonoBehaviour
             OpenAiApiKey = data["Open AI API"]?.ToString();
             ElevenApiKey = data["Eleven Labs API"]?.ToString();
             ElevenVoiceId = data["Eleven Labs Model ID"]?.ToString();
+            ReplicateApiKey = data["Replicate API"]?.ToString();
             Debug.Log("API 키 로드 완료");
         }
         else
