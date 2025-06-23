@@ -21,7 +21,7 @@ public class ReplicateImageGenerator : MonoBehaviour
         var payload = new
         {
             version = generateModel,
-            input = new { prompt = prompt }
+            input = new { prompt = prompt } //2:1비율로 만들 것 
         };
 
         string jsonPayload = JsonConvert.SerializeObject(payload);

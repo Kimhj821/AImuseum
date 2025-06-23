@@ -233,3 +233,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetPosition: {x: -1.019, y: 0, z: 42.68}
+  linkedRoomInfo: {fileID: 0}
