@@ -161,33 +161,6 @@ public class VoiceInteraction : MonoBehaviour
         }
     }
 
-
-    // IEnumerator ProcessAudioFlow()
-    // {
-    //     yield return StartCoroutine(SendToSTT());
-
-    //     if (!File.Exists(textPath)) yield break;
-    //     string prompt = File.ReadAllText(textPath);
-
-    //     if (prompt.Contains("(code_1)"))  // (code_1) 검출 시
-    //     {
-    //         Debug.Log("DALL-E 이미지 생성 흐름으로 전환");
-    //         var dalleScript = FindObjectOfType<DalleEImageGenerator>(); 
-    //         if (dalleScript != null)
-    //         {
-    //             StartCoroutine(dalleScript.SetWallsToRed(prompt));
-    //         }
-    //     }
-    //     else
-    //     {
-    //         Debug.Log("GPT → TTS 흐름 진행");
-    //         yield return StartCoroutine(SendToGPT(prompt));
-    //         string gptResponse = File.ReadAllText(textPath);
-    //         yield return StartCoroutine(SendToTTS(gptResponse));
-    //         PlayAudio(ttsPath);
-    //     }
-    // }
-
     IEnumerator SendToSTT()
     {
         byte[] audioData = File.ReadAllBytes(sttPath);
