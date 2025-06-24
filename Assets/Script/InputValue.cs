@@ -19,6 +19,8 @@ public class InputValue : MonoBehaviour
 
     private InputAction leftGrip, leftTrigger, rightGrip, rightTrigger;
     private InputAction leftSelectAction, rightSelectAction;
+
+    public GameObject leftCont,rightCont;
     
 
 
@@ -36,8 +38,30 @@ public class InputValue : MonoBehaviour
         rightTrigger = rightMap.FindAction("Activate Value");
         rightSelectAction = rightMap.FindAction("Select");
 
+        
+        
+
         leftGrip.Enable(); leftTrigger.Enable(); leftSelectAction.Enable();
         rightGrip.Enable(); rightTrigger.Enable(); rightSelectAction.Enable();
+
+        // 텔레포트 완료 이벤트 구독
+        FadeManager.Instance.OnTeleportCompleted += OnTeleportCompleted;
+    }
+
+    void OnDestroy()
+    {
+        // 이벤트 구독 해제
+        if (FadeManager.Instance != null)
+            FadeManager.Instance.OnTeleportCompleted -= OnTeleportCompleted;
+    }
+
+    // 텔레포트 완료 시 호출되는 메서드
+    private void OnTeleportCompleted()
+    {
+        // 컨트롤러 다시 활성화
+        leftCont.SetActive(true);
+        rightCont.SetActive(true);
+        Debug.Log("✅ 텔레포트 완료! 컨트롤러가 다시 활성화되었습니다.");
     }
 
     void Update()
@@ -71,25 +95,33 @@ public class InputValue : MonoBehaviour
     {
         GameObject targetObj = interactable.transform.gameObject;
 
-        // 색상 강조
-        var renderer = targetObj.GetComponent<MeshRenderer>();
-        if (renderer != null)
-        {
-            var instanceMat = new Material(renderer.material);
-            instanceMat.color = Color.yellow;
-            renderer.material = instanceMat;
-        }
+        // // 색상 강조
+        // var renderer = targetObj.GetComponent<MeshRenderer>();
+        // if (renderer != null)
+        // {
+        //     var instanceMat = new Material(renderer.material);
+        //     instanceMat.color = Color.yellow;
+        //     renderer.material = instanceMat;
+        // }
 
         // Video 재생
-        var videoPlayer = targetObj.GetComponent<VideoPlayer>();
-        if (videoPlayer != null && !videoPlayer.isPlaying)
-        {
-            videoPlayer.Play();
-            Debug.Log($"▶️ 비디오 재생됨: {targetObj.name}");
-            // WebCamera 활성화
-        }
+        // var videoPlayer = targetObj.GetComponent<VideoPlayer>();
+        // if (videoPlayer != null && !videoPlayer.isPlaying)
+        // {
+        //     videoPlayer.Play();
+        //     Debug.Log($"▶️ 비디오 재생됨: {targetObj.name}");
+        //     // WebCamera 활성화
+        // }
 
         // RoomTeleport 이동 처리
+        
+    }
+
+
+    private void OnTriggerEnter(Collider col)
+    {
+        GameObject targetObj =  col.gameObject;
+
         var teleport = targetObj.GetComponent<RoomTeleport>();
         if (teleport != null && teleport.linkedRoomInfo != null)
         {
@@ -103,9 +135,10 @@ public class InputValue : MonoBehaviour
 
             // 위치 이동
             FadeManager.Instance.FadeAndMoveTo(teleport.targetPosition);
+            leftCont.SetActive(false);
+            rightCont.SetActive(false);
         }
-    }
-
+    } 
     private IEnumerator EnableRelicsAfterDelay(int roomNumber, float delaySeconds)
     {
         yield return new WaitForSeconds(delaySeconds);
