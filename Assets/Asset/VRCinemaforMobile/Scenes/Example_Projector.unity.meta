@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: b017c82205276f64eafa6071febdfc5d
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 150120
+  packageName: VR Cinema for Mobile
+  packageVersion: 1.0
+  assetPath: Assets/VRCinemaforMobile/Scenes/Example_Projector.unity
+  uploadId: 322119

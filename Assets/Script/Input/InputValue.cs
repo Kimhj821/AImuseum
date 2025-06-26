@@ -102,19 +102,31 @@ public class InputValue : MonoBehaviour
     {
         GameObject targetObj = col.gameObject;
         var teleport = targetObj.GetComponent<RoomTeleport>();
-        if (teleport != null && teleport.linkedRoomInfo != null && teleport.isTeleportDoor == true)
+        int roomNum = teleport.linkedRoomInfo.PlayerNum;
+        if (teleport != null && teleport.linkedRoomInfo != null && teleport.isTeleportDoor == true && teleport.fastTeleport == false)
         {
-            int roomNum = teleport.linkedRoomInfo.PlayerNum;
             RoomTeleport.CurrentRoomNumber = roomNum;
             Debug.Log($"✅ 현재 방 번호: {roomNum}");
-
+            
             StartCoroutine(EnableRelicsAfterDelay(roomNum, 6f));
 
             // 이동/회전 기능 비활성화
             if (moveProvider != null) moveProvider.enabled = false;
             if (snapTurnProvider != null) snapTurnProvider.enabled = false;
 
-            FadeManager.Instance.FadeAndMoveTo(teleport.targetPosition);
+            FadeManager.Instance.FadeAndMoveTo(teleport.targetPosition,teleport.targetRotationEuler.y);
+            
+        }
+        
+        if(teleport != null &&  teleport.isTeleportDoor == true && teleport.fastTeleport == true)
+        {
+            if(xrOrigin != null)
+            {
+                xrOrigin.MoveCameraToWorldLocation(teleport.targetPosition);
+                xrOrigin.transform.rotation = Quaternion.Euler(0, teleport.targetRotationEuler.y, 0);
+                Debug.Log($"✅ 현재 방 번호: {roomNum}");
+            }
+            
         }
 
         var roomTeleport = col.gameObject.GetComponent<RoomTeleport>();

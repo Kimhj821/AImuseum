@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 0f7557140be19b74a93b5a8bd769db81
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 150120
+  packageName: VR Cinema for Mobile
+  packageVersion: 1.0
+  assetPath: Assets/VRCinemaforMobile/Prefabs/theater_ChairLow.prefab
+  uploadId: 322119

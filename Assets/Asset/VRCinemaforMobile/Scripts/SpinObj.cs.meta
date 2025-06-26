@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: cd6280409b11e2b4ab959c2f00e3419d
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 150120
+  packageName: VR Cinema for Mobile
+  packageVersion: 1.0
+  assetPath: Assets/VRCinemaforMobile/Scripts/SpinObj.cs
+  uploadId: 322119

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 542b422933380c4478262993d469fd22
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 150120
+  packageName: VR Cinema for Mobile
+  packageVersion: 1.0
+  assetPath: Assets/VRCinemaforMobile/Metrials/Light/ProjectionRoom.mat
+  uploadId: 322119

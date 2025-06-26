@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: f39f191c660301f40a7761c381f2643e
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 150120
+  packageName: VR Cinema for Mobile
+  packageVersion: 1.0
+  assetPath: Assets/VRCinemaforMobile/Metrials/Theater_CeilingLine.mat
+  uploadId: 322119

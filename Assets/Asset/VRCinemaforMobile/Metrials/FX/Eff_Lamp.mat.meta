@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: fb5c6d23b4620944c8d2c280a0644922
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 150120
+  packageName: VR Cinema for Mobile
+  packageVersion: 1.0
+  assetPath: Assets/VRCinemaforMobile/Metrials/FX/Eff_Lamp.mat
+  uploadId: 322119

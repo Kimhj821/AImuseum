@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 8977d38d4191e2b4194a4e83b56d878f
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 150120
+  packageName: VR Cinema for Mobile
+  packageVersion: 1.0
+  assetPath: Assets/VRCinemaforMobile/Metrials/Light/ScreenLightG.mat
+  uploadId: 322119

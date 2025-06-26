@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a9b8a4238ce7edb49b0367c3addf931e
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 112000000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 150120
+  packageName: VR Cinema for Mobile
+  packageVersion: 1.0
+  assetPath: Assets/VRCinemaforMobile/Scenes/Example_Projector/LightingData.asset
+  uploadId: 322119

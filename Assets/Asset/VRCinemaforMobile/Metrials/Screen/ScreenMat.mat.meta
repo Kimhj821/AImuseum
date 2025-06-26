@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: ea4d2ec37f268034285097a4b2baf785
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 150120
+  packageName: VR Cinema for Mobile
+  packageVersion: 1.0
+  assetPath: Assets/VRCinemaforMobile/Metrials/Screen/ScreenMat.mat
+  uploadId: 322119
