@@ -14,7 +14,7 @@ using System.Linq;
 public class VoiceInteraction : MonoBehaviour
 {
     private string folderPath;
-    private string sttPath, ttsPath, textPath, instructionPath;
+    private string sttPath, ttsPath, textPath;
     private AudioClip recordedClip;
     private volatile bool isRecording = false;
 
@@ -36,7 +36,6 @@ public class VoiceInteraction : MonoBehaviour
         sttPath = Path.Combine(folderPath, "STT.wav");
         ttsPath = Path.Combine(folderPath, "TTS.mp3");
         textPath = Path.Combine(folderPath, "answer.txt");
-        instructionPath = Path.Combine(folderPath, "instruction_guide.txt");
 
         if (!Directory.Exists(folderPath))
             Directory.CreateDirectory(folderPath);
@@ -115,13 +114,11 @@ public class VoiceInteraction : MonoBehaviour
         string gptResponseKorean = File.ReadAllText(textPath).Trim();
         Debug.Log("GPT 응답(한글): " + gptResponseKorean);
 
-       if (gptResponseKorean.Contains("(Call_Repli)"))
+        if (gptResponseKorean.Contains("(Call_Repli)"))
         {
-
             GameObject currentRoom = GameObject.Find("SphereRoom" + RoomTeleport.CurrentRoomNumber);
-
             RoomInfo roomInfo = currentRoom?.GetComponent<RoomInfo>();
-        if (roomInfo != null && roomInfo.PlayerNum == RoomTeleport.CurrentRoomNumber)
+            if (roomInfo != null && roomInfo.PlayerNum == RoomTeleport.CurrentRoomNumber)
             {
                 Debug.Log("🎨 Replicate 호출 플로우로 전환 (방 번호 확인 완료)");
 
@@ -153,7 +150,6 @@ public class VoiceInteraction : MonoBehaviour
             Debug.Log("🎤 TTS 및 UI 텍스트 출력 플로우 진행");
 
             // TTS 출력 및 UI 업데이트
-            // ✅ 여기서만 gptLegacyText 업데이트
             if (gptLegacyText != null) gptLegacyText.text = gptResponseKorean;
 
             yield return StartCoroutine(SendToTTS(gptResponseKorean));
@@ -187,7 +183,11 @@ public class VoiceInteraction : MonoBehaviour
 
     IEnumerator SendToGPT(string userText)
     {
-        string instruction = File.Exists(instructionPath) ? File.ReadAllText(instructionPath) : "";
+        // [변경] RoomTeleport.CurrentRoomNumber에 따라 instruction_guide N.txt 동적 선택
+        int curRoom = RoomTeleport.CurrentRoomNumber;
+        string dynamicInstructionPath = Path.Combine(folderPath, $"instruction_guide {curRoom}.txt");
+        string instruction = File.Exists(dynamicInstructionPath) ? File.ReadAllText(dynamicInstructionPath) : "";
+
         var payload = new
         {
             model = "gpt-3.5-turbo",
