@@ -10,6 +10,8 @@ public class RoomTeleport : MonoBehaviour
     public bool isTeleportDoor = true;
     public bool fastTeleport = true;
 
+    public GameObject ExitTel;
+
     public void SetRoomNumberOnly()
     {
         if (linkedRoomInfo != null)

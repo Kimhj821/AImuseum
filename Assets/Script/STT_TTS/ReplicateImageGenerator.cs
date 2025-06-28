@@ -7,8 +7,6 @@ using Newtonsoft.Json;
 using System.IO;
 using System;
 
-using WebP;
-
 public class ReplicateImageGenerator : MonoBehaviour
 {
     private const string generateApiUrl = "https://api.replicate.com/v1/predictions";
@@ -21,7 +19,14 @@ public class ReplicateImageGenerator : MonoBehaviour
         var payload = new
         {
             version = generateModel,
-            input = new { prompt = prompt } //2:1비율로 만들 것 
+            input = new
+            {
+                prompt = prompt,
+                aspect_ratio = "custom",
+                height = 512,
+                width = 1024,
+                output_format = "png"
+            }
         };
 
         string jsonPayload = JsonConvert.SerializeObject(payload);
@@ -68,9 +73,9 @@ public class ReplicateImageGenerator : MonoBehaviour
                     string imageUrl = result["output"]?.First?.ToString();
                     Debug.Log("✅ 이미지 생성 완료: " + imageUrl);
 
-                    string folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "AI_Museum_Images");
+                    string folderPath = Path.Combine(Application.persistentDataPath, "PanoramaImages");
                     Directory.CreateDirectory(folderPath);
-                    string savePath = Path.Combine(folderPath, "generated.webp");
+                    string savePath = Path.Combine(folderPath, "generated.png");
                     yield return StartCoroutine(DownloadImage(imageUrl, savePath));
                     yield return StartCoroutine(UpscaleWithReplicate(savePath));
                     break;
@@ -119,7 +124,7 @@ public class ReplicateImageGenerator : MonoBehaviour
             version = upscaleModel,
             input = new
             {
-                image = "data:image/webp;base64," + base64Image,
+                image = "data:image/png;base64," + base64Image,
                 upscale = 4
             }
         };
@@ -143,7 +148,7 @@ public class ReplicateImageGenerator : MonoBehaviour
         }
         else
         {
-            Debug.LogError("❌ realEsrgan 업스케일링 요청 실패: " + request.error);
+            Debug.LogError("❌ realEsrGan 업스케일링 요청 실패: " + request.error);
         }
     }
 
@@ -161,12 +166,12 @@ public class ReplicateImageGenerator : MonoBehaviour
                 string status = result["status"]?.ToString();
                 if (status == "succeeded")
                 {
-                    string upscaleUrl = result["output"]?.ToString();;
+                    string upscaleUrl = result["output"]?.ToString();
                     Debug.Log("✅ 업스케일 완료: " + upscaleUrl);
 
-                    string upscaleFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "AI_Museum_Images_4k");
+                    string upscaleFolder = Path.Combine(Application.persistentDataPath, "PanoramaImages", "4k");
                     Directory.CreateDirectory(upscaleFolder);
-                    string upscalePath = Path.Combine(upscaleFolder, "generated.png");
+                    string upscalePath = Path.Combine(upscaleFolder, "generated_4k.png");
 
                     UnityWebRequest img = UnityWebRequest.Get(upscaleUrl);
                     yield return img.SendWebRequest();
@@ -175,6 +180,8 @@ public class ReplicateImageGenerator : MonoBehaviour
                     {
                         File.WriteAllBytes(upscalePath, img.downloadHandler.data);
                         Debug.Log("📁 4K 이미지 저장 완료: " + upscalePath);
+
+                        // ★ 업스케일 이미지가 저장된 후 텍스처 적용!
                         yield return StartCoroutine(ApplyTexture(upscalePath));
                     }
                     break;
@@ -189,6 +196,7 @@ public class ReplicateImageGenerator : MonoBehaviour
         }
     }
 
+    // 머티리얼에 4K 텍스처 적용
     private IEnumerator ApplyTexture(string texturePath)
     {
         byte[] pngBytes = File.ReadAllBytes(texturePath);
@@ -206,6 +214,14 @@ public class ReplicateImageGenerator : MonoBehaviour
                 rend.material.mainTexture = texture;
                 Debug.Log("🎨 머티리얼에 텍스처 적용 완료 (4K)");
             }
+            else
+            {
+                Debug.LogWarning("🎨 렌더러가 없습니다: " + currentRoomName);
+            }
+        }
+        else
+        {
+            Debug.LogWarning("🛑 타겟 오브젝트를 찾지 못함: " + currentRoomName);
         }
         yield return null;
     }

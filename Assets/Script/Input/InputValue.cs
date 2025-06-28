@@ -170,7 +170,9 @@ public class InputValue : MonoBehaviour
                 xrOrigin.MoveCameraToWorldLocation(teleport.targetPosition);
                 xrOrigin.transform.rotation = Quaternion.Euler(0, teleport.targetRotationEuler.y, 0);
                 Debug.Log($"✅ 현재 방 번호: {roomNum}");
+                teleport.ExitTel.SetActive(true);
             }
+            
         }
 
         var roomTeleport = col.gameObject.GetComponent<RoomTeleport>();
