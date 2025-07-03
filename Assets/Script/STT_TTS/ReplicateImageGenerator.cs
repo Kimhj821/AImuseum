@@ -13,6 +13,8 @@ public class ReplicateImageGenerator : MonoBehaviour
     private const string generateModel = "d26037255a2b298408505e2fbd0bf7703521daca8f07e8c8f335ba874b4aa11a"; // flux (igorriti/flux-360)
     private const string upscaleModel = "d0ee3d708c9b911f122a4ad90046c5d26a0293b99476d697f6bb7f2e251ce2d4"; // realEsrgan (nightmareai/real-esrgan)
 
+    private bool isUpscaling = false; // 업스케일 진행 여부 플래그
+
     // flux 이미지 생성 요청
     public IEnumerator GenerateImages(string prompt)
     {
@@ -77,7 +79,16 @@ public class ReplicateImageGenerator : MonoBehaviour
                     Directory.CreateDirectory(folderPath);
                     string savePath = Path.Combine(folderPath, "generated.png");
                     yield return StartCoroutine(DownloadImage(imageUrl, savePath));
-                    yield return StartCoroutine(UpscaleWithReplicate(savePath));
+
+                    // 업스케일링은 비동기로 별도 코루틴 실행 (yield return 없이)
+                    if (!isUpscaling)
+                    {
+                        StartCoroutine(UpscaleWithReplicate(savePath));
+                    }
+                    else
+                    {
+                        Debug.LogWarning("⚠️ 이미 업스케일 중입니다.");
+                    }
                     break;
                 }
                 else if (status == "failed")
@@ -109,13 +120,15 @@ public class ReplicateImageGenerator : MonoBehaviour
     // realEsrgan 업스케일링 요청
     private IEnumerator UpscaleWithReplicate(string inputPath)
     {
+        isUpscaling = true; // 업스케일링 시작 플래그 ON
+
         byte[] imageBytes = File.ReadAllBytes(inputPath);
         string base64Image = Convert.ToBase64String(imageBytes);
 
-        // 유효성 검사
         if (string.IsNullOrEmpty(base64Image) || base64Image.Length < 1000)
         {
             Debug.LogError("⚠️ base64 인코딩 실패 또는 이미지가 너무 작음!");
+            isUpscaling = false;
             yield break;
         }
 
@@ -149,6 +162,7 @@ public class ReplicateImageGenerator : MonoBehaviour
         else
         {
             Debug.LogError("❌ realEsrGan 업스케일링 요청 실패: " + request.error);
+            isUpscaling = false;
         }
     }
 
@@ -181,14 +195,16 @@ public class ReplicateImageGenerator : MonoBehaviour
                         File.WriteAllBytes(upscalePath, img.downloadHandler.data);
                         Debug.Log("📁 4K 이미지 저장 완료: " + upscalePath);
 
-                        // ★ 업스케일 이미지가 저장된 후 텍스처 적용!
+                        // 업스케일 이미지가 저장된 후 텍스처 적용!
                         yield return StartCoroutine(ApplyTexture(upscalePath));
                     }
+                    isUpscaling = false; // 업스케일링 종료 플래그 OFF
                     break;
                 }
                 else if (status == "failed")
                 {
                     Debug.LogError("❌ 업스케일링 실패");
+                    isUpscaling = false;
                     break;
                 }
             }

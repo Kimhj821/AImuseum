@@ -6,6 +6,8 @@ TagManager:
   tags:
   - WebCamera
   - Door
+  - Video_Play
+  - DoorCube
   layers:
   - Default
   - TransparentFX
