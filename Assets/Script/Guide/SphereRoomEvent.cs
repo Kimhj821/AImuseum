@@ -6,14 +6,19 @@ public class SphereRoomEvent : MonoBehaviour
     
     public int num = 0;
 
-    void OnTriggerEnter(Collider col)
+    void OnTriggerStay(Collider col)
     {
         if(col.gameObject.tag == "Player")
         {
             if(num == 1)
             {
                 PlaySphereGuideScene("GuideScene4.json","GuideScene4_v.mp3");
-                num -= 1;
+                num = 0;
+            }
+            if(num == 2)
+            {
+                PlaySphereGuideScene("GuideScene5.json","GuideScene5_v.mp3");
+                num = 0;
             }
         }
     }

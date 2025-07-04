@@ -12,9 +12,6 @@ public class DoorManager : MonoBehaviour
 
  
 
-    // GuideScene이 한 번만 실행되도록 하는 플래그
-    private bool hasPlayedGuideScene = false;
-
     void Start()
     {
         door2Anim = door2.GetComponent<Animator>();
@@ -31,27 +28,27 @@ public class DoorManager : MonoBehaviour
             // 우선순위: 3 > 2 > 1 > 기본
             if (inputValue.isDoor3Open == true && inputValue.isLastLook == true)
             {
-                PlayGuideLobbyScene("GuideScene9_Lobby.json", "GuideScene9_Lobby_v.mp3");
+                PlayLobbyGuideScene("GuideScene9_Lobby.json", "GuideScene9_Lobby_v.mp3");
             }
             if (inputValue.isDoor3Open == true && inputValue.isLastLook == false)
             {
-                PlayGuideLobbyScene("GuideScene8_Lobby.json", "GuideScene8_Lobby_v.mp3");
+                PlayLobbyGuideScene("GuideScene8_Lobby.json", "GuideScene8_Lobby_v.mp3");
                 door3Anim.SetBool("room3open", true);
                 
             }
             if (inputValue.isDoor2Open == true && inputValue.isDoor3Open == false)
             {
-                PlayGuideLobbyScene("GuideScene7_Lobby.json", "GuideScene7_Lobby_v.mp3");
+                PlayLobbyGuideScene("GuideScene7_Lobby.json", "GuideScene7_Lobby_v.mp3");
                 door2Anim.SetBool("room2open", true);
             }
             
             if(inputValue.isDoor3Open == false && inputValue.isDoor2Open == false)
-                PlayGuideLobbyScene("GuideScene1_Lobby.json", "GuideScene1_Lobby_v.mp3");
+                PlayLobbyGuideScene("GuideScene1_Lobby.json", "GuideScene1_Lobby_v.mp3");
 
         }
     }
 
-    void PlayGuideLobbyScene(string jsonFile, string mp3File)
+    void PlayLobbyGuideScene(string jsonFile, string mp3File)
     {
         // GuideFile 폴더를 경로에 추가
         string jsonPath = Path.Combine(Application.streamingAssetsPath, "GuideFile", jsonFile);

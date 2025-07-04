@@ -10,6 +10,7 @@ public class Robot_Control : MonoBehaviour
     public float stopDistance = 2.0f;
     public float rotationSpeed = 5.0f;
     public float startupDelay = 1.0f;
+    public float minFollowDistance = 1.5f; // Inspector에서 조절 가능
 
     // Inspector에서 지정할 카메라
     public Camera followCamera;
@@ -84,7 +85,7 @@ public class Robot_Control : MonoBehaviour
         agent.isStopped = false;
 
         // 플레이어의 뒤쪽을 목적지로 설정
-        float behindOffset = 2.0f; // 플레이어 뒤로 2m
+        float behindOffset = minFollowDistance; // Inspector에서 조절
         Vector3 targetPos = player.position - player.forward.normalized * behindOffset;
         targetPos.y = player.position.y;
 
@@ -103,8 +104,8 @@ public class Robot_Control : MonoBehaviour
         float distToPlayer = Vector3.Distance(transform.position, player.position);
         if (distToPlayer > teleportDistance)
         {
-            // 플레이어가 바라보는 방향 뒤 0.5미터 위치로 텔레포트
-            Vector3 spawnPos = player.position - player.forward.normalized * 1f;
+            // 플레이어가 바라보는 방향 뒤 minFollowDistance 위치로 텔레포트
+            Vector3 spawnPos = player.position - player.forward.normalized * minFollowDistance;
             spawnPos.y = player.position.y;
             agent.Warp(spawnPos);
             Idle_Animation();

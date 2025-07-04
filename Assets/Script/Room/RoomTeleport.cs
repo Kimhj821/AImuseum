@@ -18,6 +18,7 @@ public class RoomTeleport : MonoBehaviour
         {
             CurrentRoomNumber = linkedRoomInfo.PlayerNum;
             Debug.Log($"RoomTeleport: PlayerNum 변경됨 = {CurrentRoomNumber}");
+            
         }
     }
 }

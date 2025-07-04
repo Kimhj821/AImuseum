@@ -11,6 +11,7 @@ using UnityEngine.XR.Interaction.Toolkit.Locomotion.Movement;
 using UnityEngine.Video;
 using Unity.XR.CoreUtils;
 using UnityEngine.XR;
+using System.IO;
 
 public class InputValue : MonoBehaviour
 {
@@ -42,20 +43,30 @@ public class InputValue : MonoBehaviour
     // --- 이벤트 추적 ---
     private Dictionary<int, bool> eventStates = new Dictionary<int, bool>(); // 이벤트 실행 여부 저장
 
+    [Header("전시품 본 갯수")]
     private int exhibit1Count = 0;
     private int exhibit2Count = 0;
     private int exhibit3Count = 0;
 
     public int totalEventCount = 0; // 전체 이벤트 완료 개수
 
+    [Header("모든 전시품 확인")]
     public bool isExhibit1Complete = false;
     public bool isExhibit2Complete = false;
     public bool isExhibit3Complete = false;
     public bool isAllExhibitsComplete = false;
+    
+    [Header("모든 이벤트 확인")]
 
+    public float last_event1_count = 5f;
+    public float last_event2_count = 5f;
+    public float last_event3_count = 5f;
+    
     private const int exhibit1Total = 6;
     private const int exhibit2Total = 8;
     private const int exhibit3Total = 7;
+
+    public ExhibitDescriptionUI descriptionUI; // Inspector에서 할당
 
     void Start()
     {
@@ -131,8 +142,37 @@ public class InputValue : MonoBehaviour
         {
             HandleSelection(XRNode.RightHand);
         }
-    }
 
+        if(isExhibit1Complete == true && last_event1_count > 0)
+        {
+            last_event1_count -= Time.deltaTime;
+        }
+        if(last_event1_count < 0)
+        {
+            last_event1_count = 0;
+            PlayGuideScene2("GuideScene2.json","GuideScene2_v.mp3");
+        }
+
+        if(isExhibit2Complete == true && last_event2_count > 0)
+        {
+            last_event2_count -= Time.deltaTime;
+        }
+        if(last_event2_count < 0)
+        {
+            last_event2_count = 0;
+            PlayGuideScene2("GuideScene2.json","GuideScene2_v.mp3");
+        }
+
+        if(isExhibit3Complete == true && last_event3_count > 0)
+        {
+            last_event3_count -= Time.deltaTime;
+        }
+        if(last_event3_count < 0)
+        {
+            last_event3_count = 0;
+            PlayGuideScene2("GuideScene2.json","GuideScene2_v.mp3");
+        }
+    }
     // 실제 상호작용 처리 함수
     private void HandleInteraction(IXRInteractable interactable, XRNode hand)
     {
@@ -162,11 +202,13 @@ public class InputValue : MonoBehaviour
                 {
                     eventStates[eventId] = true;
                     totalEventCount++;
-
+                    
                     if (eventId >= 1001 && eventId <= 1006)
                     {
                         exhibit1Count++;
-                        if (exhibit1Count == exhibit1Total) isExhibit1Complete = true;
+                        if (exhibit1Count == exhibit1Total) {
+                            isExhibit1Complete = true;
+                        }
                     }
                     else if (eventId >= 2001 && eventId <= 2008)
                     {
@@ -211,12 +253,16 @@ public class InputValue : MonoBehaviour
         if (teleport != null && teleport.linkedRoomInfo != null)
         {
             int roomNum = teleport.linkedRoomInfo.PlayerNum;
+            Debug.Log($"[DEBUG] isExhibit1Complete={isExhibit1Complete}, CurrentRoomNumber={RoomTeleport.CurrentRoomNumber}, roomNum={roomNum}");
+           
+
             if (teleport.isTeleportDoor && !teleport.fastTeleport)
             {
                 RoomTeleport.CurrentRoomNumber = roomNum;
                 if (roomNum == 1) isDoor2Open = true;
                 if (roomNum == 2) isDoor3Open = true;
                 if (roomNum == 3) isLastLook = true;
+                
 
                 if (moveProvider != null) moveProvider.enabled = false;
                 if (snapTurnProvider != null) snapTurnProvider.enabled = false;
@@ -264,6 +310,18 @@ public class InputValue : MonoBehaviour
                 moviePlayer.VideoPause();
             else
                 Debug.LogWarning("MoviePlayer를 찾지 못했습니다. (트리거나 자식에 없음)");
+        }
+    }
+
+    void PlayGuideScene2(string jsonFile, string mp3File)
+    {
+        string jsonPath = Path.Combine(Application.streamingAssetsPath, "GuideFile", jsonFile);
+        string mp3Path = Path.Combine(Application.streamingAssetsPath, "GuideFile", mp3File);
+
+        if (descriptionUI != null)
+        {
+            descriptionUI.ShowExhibitDescription(jsonPath);
+            descriptionUI.PlayExhibitAudio(mp3Path);
         }
     }
 }
