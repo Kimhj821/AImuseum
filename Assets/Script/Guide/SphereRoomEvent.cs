@@ -22,6 +22,8 @@ public class SphereRoomEvent : MonoBehaviour
             }
         }
     }
+
+
     void PlaySphereGuideScene(string jsonFile, string mp3File)
     {
         // GuideFile 폴더를 경로에 추가

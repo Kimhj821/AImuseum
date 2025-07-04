@@ -15,7 +15,7 @@ public class ExhibitDescriptionUI : MonoBehaviour
     {
         if (!File.Exists(jsonPath))
         {
-            Debug.LogWarning($"[설명UI] JSON 파일 없음: {jsonPath}");
+            //Debug.LogWarning($"[설명UI] JSON 파일 없음: {jsonPath}");
             singleText.text = "설명 파일이 없습니다.";
             return;
         }
@@ -30,14 +30,14 @@ public class ExhibitDescriptionUI : MonoBehaviour
         }
         catch
         {
-            Debug.LogWarning("[설명UI] JSON 파싱 실패");
+            //Debug.LogWarning("[설명UI] JSON 파싱 실패");
             singleText.text = "설명을 불러올 수 없습니다.";
             return;
         }
 
         if (data == null || data.Count == 0)
         {
-            Debug.LogWarning("[설명UI] JSON 데이터 없음");
+            //Debug.LogWarning("[설명UI] JSON 데이터 없음");
             singleText.text = "설명을 찾을 수 없습니다.";
             return;
         }
@@ -50,12 +50,12 @@ public class ExhibitDescriptionUI : MonoBehaviour
     {
         if (audioSource == null)
         {
-            Debug.LogWarning("[설명UI] AudioSource가 할당되지 않았습니다.");
+            //Debug.LogWarning("[설명UI] AudioSource가 할당되지 않았습니다.");
             return;
         }
         if (!File.Exists(mp3Path))
         {
-            Debug.LogWarning($"[설명UI] MP3 파일 없음: {mp3Path}");
+            //Debug.LogWarning($"[설명UI] MP3 파일 없음: {mp3Path}");
             return;
         }
         StartCoroutine(LoadAndPlayAudio(mp3Path));
@@ -69,7 +69,7 @@ public class ExhibitDescriptionUI : MonoBehaviour
             yield return www;
             if (!string.IsNullOrEmpty(www.error))
             {
-                Debug.LogWarning($"[설명UI] 오디오 로드 실패: {www.error}");
+                //Debug.LogWarning($"[설명UI] 오디오 로드 실패: {www.error}");
                 yield break;
             }
             audioSource.clip = www.GetAudioClip(false, false);

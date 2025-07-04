@@ -84,9 +84,9 @@ public class Robot_Control : MonoBehaviour
     {
         agent.isStopped = false;
 
-        // 플레이어의 뒤쪽을 목적지로 설정
-        float behindOffset = minFollowDistance; // Inspector에서 조절
-        Vector3 targetPos = player.position - player.forward.normalized * behindOffset;
+        // 플레이어와의 최소 거리를 유지하며 따라가기 (항상 뒤쪽이동 X)
+        Vector3 directionToPlayer = (player.position - transform.position).normalized;
+        Vector3 targetPos = player.position - directionToPlayer * minFollowDistance;
         targetPos.y = player.position.y;
 
         agent.SetDestination(targetPos);
@@ -104,8 +104,8 @@ public class Robot_Control : MonoBehaviour
         float distToPlayer = Vector3.Distance(transform.position, player.position);
         if (distToPlayer > teleportDistance)
         {
-            // 플레이어가 바라보는 방향 뒤 minFollowDistance 위치로 텔레포트
-            Vector3 spawnPos = player.position - player.forward.normalized * minFollowDistance;
+            // 플레이어와의 minFollowDistance만큼 떨어진 위치로 텔레포트
+            Vector3 spawnPos = player.position - directionToPlayer * minFollowDistance;
             spawnPos.y = player.position.y;
             agent.Warp(spawnPos);
             Idle_Animation();
