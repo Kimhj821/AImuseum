@@ -55,8 +55,8 @@ public class DoorManager : MonoBehaviour
     void PlayLobbyGuideScene(string jsonFile, string mp3File)
     {
         // GuideFile 폴더를 경로에 추가
-        string jsonPath = Path.Combine(Application.streamingAssetsPath, "GuideFile", jsonFile);
-        string mp3Path = Path.Combine(Application.streamingAssetsPath, "GuideFile", mp3File);
+        string jsonPath = Path.Combine(Application.dataPath, "Audio", "GuideFile", jsonFile);
+        string mp3Path = Path.Combine(Application.dataPath, "Audio", "GuideFile", mp3File);
 
         if (descriptionUI != null)
         {

@@ -331,8 +331,8 @@ public class InputValue : MonoBehaviour
 
     void PlayGuideScene2(string jsonFile, string mp3File)
     {
-        string jsonPath = Path.Combine(Application.streamingAssetsPath, "GuideFile", jsonFile);
-        string mp3Path = Path.Combine(Application.streamingAssetsPath, "GuideFile", mp3File);
+        string jsonPath = Path.Combine(Application.dataPath, "Audio", "GuideFile", jsonFile);
+        string mp3Path = Path.Combine(Application.dataPath, "Audio", "GuideFile", mp3File);
 
         if (descriptionUI != null)
         {

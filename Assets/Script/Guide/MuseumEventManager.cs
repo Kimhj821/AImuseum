@@ -68,8 +68,8 @@ public class MuseumEventManagement : MonoBehaviour
         }
 
         // 서브폴더까지 경로 포함
-        string jsonPath = Path.Combine(Application.streamingAssetsPath, exhibit.roomFolder, exhibit.jsonFile);
-        string mp3Path = Path.Combine(Application.streamingAssetsPath, exhibit.roomFolder, exhibit.mp3File);
+        string jsonPath = Path.Combine(Application.dataPath, "Audio", exhibit.roomFolder, exhibit.jsonFile);
+        string mp3Path = Path.Combine(Application.dataPath, "Audio", exhibit.roomFolder, exhibit.mp3File);
 
         // JSON 읽기
         string jsonText = "";

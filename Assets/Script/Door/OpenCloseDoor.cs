@@ -2,16 +2,17 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations;
 using System.IO;
+
 public class OpenCloseDoor : MonoBehaviour
 {
     public GameObject doorCube;
     public GameObject doorCloseCube;
     public Animator animator;
 
-
     public ExhibitDescriptionUI descriptionUI; // Inspector에서 할당
 
     public int num = 0;
+
     void Start()
     {
         animator = doorCube.GetComponent<Animator>();
@@ -21,42 +22,47 @@ public class OpenCloseDoor : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            if(num == 1)
+            if (num == 1)
+            {
                 animator.SetBool("curtain_opcl1", true);
-                PlayCurtainGuideScene("GuideScene3.json","GuideScene3_v.wav");
-            if(num == 2)
+                PlayCurtainGuideScene("GuideScene3.json", "GuideFile/GuideScene3_v");
+            }
+            if (num == 2)
+            {
                 animator.SetBool("curtain_opcl2", true);
-                PlayCurtainGuideScene("GuideScene3.json","GuideScene3_v.wav");
-            if(num == 3)
+                PlayCurtainGuideScene("GuideScene3.json", "GuideFile/GuideScene3_v");
+            }
+            if (num == 3)
+            {
                 animator.SetBool("curtain_opcl3", true);
-                PlayCurtainGuideScene("GuideScene3.json","GuideScene3_v.wav");
+                PlayCurtainGuideScene("GuideScene3.json", "GuideFile/GuideScene3_v");
+            }
             doorCloseCube.SetActive(false);
         }
-
     }
+
     void OnTriggerExit(Collider col)
     {
-        if(col.gameObject.tag == "Player")
+        if (col.gameObject.tag == "Player")
         {
-            if(num == 1)
+            if (num == 1)
                 animator.SetBool("curtain_opcl1", false);
-            if(num == 2)
+            if (num == 2)
                 animator.SetBool("curtain_opcl2", false);
-            if(num == 3)
+            if (num == 3)
                 animator.SetBool("curtain_opcl3", false);
-        }   
+        }
     }
 
-    void PlayCurtainGuideScene(string jsonFile, string mp3File)
+    void PlayCurtainGuideScene(string jsonFile, string clipName)
     {
-        // GuideFile 폴더를 경로에 추가
-        string jsonPath = Path.Combine(Application.streamingAssetsPath, "GuideFile", jsonFile);
-        string mp3Path = Path.Combine(Application.streamingAssetsPath, "GuideFile", mp3File);
+        string jsonPath = Path.Combine(Application.dataPath, "Audio", "GuideFile", jsonFile);
 
         if (descriptionUI != null)
         {
             descriptionUI.ShowExhibitDescription(jsonPath);
-            descriptionUI.PlayExhibitAudio(mp3Path);
+            // 오디오: clipName만 넘김 (확장자X, Resources/GuideFile/GuideScene3_v.wav 구조)
+            descriptionUI.PlayExhibitAudio(clipName);
         }
     }
 }

@@ -24651,7 +24651,7 @@ MonoBehaviour:
   m_AllowHoverHapticsWhileSelecting: 1
   m_LineType: 0
   m_BlendVisualLinePoints: 1
-  m_MaxRaycastDistance: 1
+  m_MaxRaycastDistance: 2
   m_RayOriginTransform: {fileID: 0}
   m_ReferenceFrame: {fileID: 0}
   m_Velocity: 16
@@ -59771,7 +59771,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1196611223
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69340,7 +69340,7 @@ MonoBehaviour:
   m_AllowHoverHapticsWhileSelecting: 1
   m_LineType: 0
   m_BlendVisualLinePoints: 1
-  m_MaxRaycastDistance: 1
+  m_MaxRaycastDistance: 0
   m_RayOriginTransform: {fileID: 0}
   m_ReferenceFrame: {fileID: 0}
   m_Velocity: 16
@@ -84619,7 +84619,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Mediator: {fileID: 1922462080}
   m_TransformationPriority: 0
-  m_MoveSpeed: 1.2
+  m_MoveSpeed: 3
   m_EnableStrafe: 1
   m_EnableFly: 0
   m_UseGravity: 1
@@ -92835,27 +92835,27 @@ MonoBehaviour:
   - eventId: 1001
     roomFolder: OneRoom
     jsonFile: Eojin.json
-    mp3File: Eojin_v.wav
+    mp3File: Eojin_v.mp3
   - eventId: 1002
     roomFolder: OneRoom
     jsonFile: Silok.json
-    mp3File: Silok_v.wav
+    mp3File: Silok_v.mp3
   - eventId: 1003
     roomFolder: OneRoom
     jsonFile: Weapon.json
-    mp3File: Weapon_v.wav
+    mp3File: Weapon_v.mp3
   - eventId: 1004
     roomFolder: OneRoom
     jsonFile: Mongju.json
-    mp3File: Mongju_v.wav
+    mp3File: Mongju_v.mp3
   - eventId: 1005
     roomFolder: OneRoom
     jsonFile: Goryeo.json
-    mp3File: Goryeo_v.wav
+    mp3File: Goryeo_v.mp3
   - eventId: 1006
     roomFolder: OneRoom
     jsonFile: GukSae.json
-    mp3File: GukSae_v.wav
+    mp3File: GukSae_v.mp3
   - eventId: 2001
     roomFolder: TwoRoom
     jsonFile: Potato.json
