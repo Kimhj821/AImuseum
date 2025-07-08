@@ -23,16 +23,20 @@ public class OpenCloseDoor : MonoBehaviour
         {
             if(num == 1)
                 animator.SetBool("curtain_opcl1", true);
-                PlayCurtainGuideScene("GuideScene3.json","GuideScene3_v.mp3");
+                PlayCurtainGuideScene("GuideScene3.json","GuideScene3_v.wav");
             if(num == 2)
                 animator.SetBool("curtain_opcl2", true);
-                PlayCurtainGuideScene("GuideScene3.json","GuideScene3_v.mp3");
+                PlayCurtainGuideScene("GuideScene3.json","GuideScene3_v.wav");
             if(num == 3)
                 animator.SetBool("curtain_opcl3", true);
-                PlayCurtainGuideScene("GuideScene3.json","GuideScene3_v.mp3");
+                PlayCurtainGuideScene("GuideScene3.json","GuideScene3_v.wav");
             doorCloseCube.SetActive(false);
         }
-        else
+
+    }
+    void OnTriggerExit(Collider col)
+    {
+        if(col.gameObject.tag == "Player")
         {
             if(num == 1)
                 animator.SetBool("curtain_opcl1", false);
@@ -40,8 +44,7 @@ public class OpenCloseDoor : MonoBehaviour
                 animator.SetBool("curtain_opcl2", false);
             if(num == 3)
                 animator.SetBool("curtain_opcl3", false);
-            doorCloseCube.SetActive(true);
-        }
+        }   
     }
 
     void PlayCurtainGuideScene(string jsonFile, string mp3File)

@@ -24,31 +24,31 @@ public class MuseumEventManagement : MonoBehaviour
     public List<ExhibitInfo> exhibitList = new List<ExhibitInfo>()
     {
         // 1번방(OneRoom)
-        new ExhibitInfo { eventId = 1001, roomFolder = "OneRoom", jsonFile = "Eojin.json",      mp3File = "Eojin_v.mp3" },
-        new ExhibitInfo { eventId = 1002, roomFolder = "OneRoom", jsonFile = "Silok.json",      mp3File = "Silok_v.mp3" },
-        new ExhibitInfo { eventId = 1003, roomFolder = "OneRoom", jsonFile = "Weapon.json",     mp3File = "Weapon_v.mp3" },
-        new ExhibitInfo { eventId = 1004, roomFolder = "OneRoom", jsonFile = "Mongju.json",     mp3File = "Mongju_v.mp3" },
-        new ExhibitInfo { eventId = 1005, roomFolder = "OneRoom", jsonFile = "Goryeo.json",     mp3File = "Goryeo_v.mp3" },
-        new ExhibitInfo { eventId = 1006, roomFolder = "OneRoom", jsonFile = "GukSae.json",     mp3File = "GukSae_v.mp3" },
+        new ExhibitInfo { eventId = 1001, roomFolder = "OneRoom", jsonFile = "Eojin.json",      mp3File = "Eojin_v.wav" },
+        new ExhibitInfo { eventId = 1002, roomFolder = "OneRoom", jsonFile = "Silok.json",      mp3File = "Silok_v.wav" },
+        new ExhibitInfo { eventId = 1003, roomFolder = "OneRoom", jsonFile = "Weapon.json",     mp3File = "Weapon_v.wav" },
+        new ExhibitInfo { eventId = 1004, roomFolder = "OneRoom", jsonFile = "Mongju.json",     mp3File = "Mongju_v.wav" },
+        new ExhibitInfo { eventId = 1005, roomFolder = "OneRoom", jsonFile = "Goryeo.json",     mp3File = "Goryeo_v.wav" },
+        new ExhibitInfo { eventId = 1006, roomFolder = "OneRoom", jsonFile = "GukSae.json",     mp3File = "GukSae_v.wav" },
 
         // 2번방(TwoRoom)
-        new ExhibitInfo { eventId = 2001, roomFolder = "TwoRoom", jsonFile = "Potato.json",     mp3File = "Potato_v.mp3" },     // 감자 먹는 사람들
-        new ExhibitInfo { eventId = 2002, roomFolder = "TwoRoom", jsonFile = "Bandage.json",    mp3File = "Bandage_v.mp3" },    // 귀에 붕대를 감은 자화상
-        new ExhibitInfo { eventId = 2003, roomFolder = "TwoRoom", jsonFile = "Letter.json",     mp3File = "Letter_v.mp3" },     // 반고흐 마지막 편지
-        new ExhibitInfo { eventId = 2004, roomFolder = "TwoRoom", jsonFile = "Sketch.json",     mp3File = "Sketch_v.mp3" },     // 가족사진 및 스케치 (유년기 스케치)
-        new ExhibitInfo { eventId = 2005, roomFolder = "TwoRoom", jsonFile = "Star.json",       mp3File = "Star_v.mp3" },       // 별이 빛나는 밤
-        new ExhibitInfo { eventId = 2006, roomFolder = "TwoRoom", jsonFile = "Bible.json",      mp3File = "Bible_v.mp3" },      // 성경이 있는 정물
-        new ExhibitInfo { eventId = 2007, roomFolder = "TwoRoom", jsonFile = "Arle.json",       mp3File = "Arle_v.mp3" },       // 아를의 침실
-        new ExhibitInfo { eventId = 2008, roomFolder = "TwoRoom", jsonFile = "Sunflower.json",  mp3File = "Sunflower_v.mp3" },  // 해바라기
+        new ExhibitInfo { eventId = 2001, roomFolder = "TwoRoom", jsonFile = "Potato.json",     mp3File = "Potato_v.wav" },     // 감자 먹는 사람들
+        new ExhibitInfo { eventId = 2002, roomFolder = "TwoRoom", jsonFile = "Bandage.json",    mp3File = "Bandage_v.wav" },    // 귀에 붕대를 감은 자화상
+        new ExhibitInfo { eventId = 2003, roomFolder = "TwoRoom", jsonFile = "Letter.json",     mp3File = "Letter_v.wav" },     // 반고흐 마지막 편지
+        new ExhibitInfo { eventId = 2004, roomFolder = "TwoRoom", jsonFile = "Sketch.json",     mp3File = "Sketch_v.wav" },     // 가족사진 및 스케치 (유년기 스케치)
+        new ExhibitInfo { eventId = 2005, roomFolder = "TwoRoom", jsonFile = "Star.json",       mp3File = "Star_v.wav" },       // 별이 빛나는 밤
+        new ExhibitInfo { eventId = 2006, roomFolder = "TwoRoom", jsonFile = "Bible.json",      mp3File = "Bible_v.wav" },      // 성경이 있는 정물
+        new ExhibitInfo { eventId = 2007, roomFolder = "TwoRoom", jsonFile = "Arle.json",       mp3File = "Arle_v.wav" },       // 아를의 침실
+        new ExhibitInfo { eventId = 2008, roomFolder = "TwoRoom", jsonFile = "Sunflower.json",  mp3File = "Sunflower_v.wav" },  // 해바라기
 
         // 3번방(ThreeRoom)
-        new ExhibitInfo { eventId = 3001, roomFolder = "ThreeRoom", jsonFile = "SpaceClothes.json", mp3File = "SpaceClothes_v.mp3" },  // 아폴로11호 우주복
-        new ExhibitInfo { eventId = 3002, roomFolder = "ThreeRoom", jsonFile = "Checklist.json",    mp3File = "Checklist_v.mp3" },     // 달 체크리스트 및 장비
-        new ExhibitInfo { eventId = 3003, roomFolder = "ThreeRoom", jsonFile = "Persnality.json",   mp3File = "Persnality_v.mp3" },    // 암스트롱 개인소장품
-        new ExhibitInfo { eventId = 3004, roomFolder = "ThreeRoom", jsonFile = "Moonrock.json",     mp3File = "Moonrock_v.mp3" },      // 문락 달 암석 샘플
-        new ExhibitInfo { eventId = 3005, roomFolder = "ThreeRoom", jsonFile = "Footstep.json",     mp3File = "Footstep_v.mp3" },      // 달 표면 발자국 석고본
-        new ExhibitInfo { eventId = 3006, roomFolder = "ThreeRoom", jsonFile = "X15.json",          mp3File = "X15_v.mp3" },           // X-15 로켓플레인
-        new ExhibitInfo { eventId = 3007, roomFolder = "ThreeRoom", jsonFile = "Commander.json",          mp3File = "Commander_v.mp3" },           //사령선 
+        new ExhibitInfo { eventId = 3001, roomFolder = "ThreeRoom", jsonFile = "Checklist.json", mp3File = "Checklist_v.wav" },  // 아폴로11호 우주복
+        new ExhibitInfo { eventId = 3002, roomFolder = "ThreeRoom", jsonFile = "Persnality.json",    mp3File = "Persnality_v.wav" },     // 달 체크리스트 및 장비
+        new ExhibitInfo { eventId = 3003, roomFolder = "ThreeRoom", jsonFile = "SpaceClothes.json",   mp3File = "SpaceClothes_v.wav" },    // 암스트롱 개인소장품
+        new ExhibitInfo { eventId = 3004, roomFolder = "ThreeRoom", jsonFile = "Moonrock.json",     mp3File = "Moonrock_v.wav" },      // 문락 달 암석 샘플
+        new ExhibitInfo { eventId = 3005, roomFolder = "ThreeRoom", jsonFile = "Footstep.json",     mp3File = "Footstep_v.wav" },      // 달 표면 발자국 석고본
+        new ExhibitInfo { eventId = 3006, roomFolder = "ThreeRoom", jsonFile = "X15.json",          mp3File = "X15_v.wav" },           // X-15 로켓플레인
+        new ExhibitInfo { eventId = 3007, roomFolder = "ThreeRoom", jsonFile = "Commander.json",    mp3File = "Commander_v.wav" }     //사령선 
     };
 
     // 전시품 정보 찾기

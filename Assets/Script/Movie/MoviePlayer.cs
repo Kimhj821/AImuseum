@@ -7,26 +7,34 @@ public class MoviePlayer : MonoBehaviour
     public VideoPlayer videoPlayer;
 
     private bool hasPlayedOnce = false;
-
     double currentTime;
     bool event_Play = false;
+    private bool isVideoEnded = false; // 영상 종료 플래그 추가
 
     public double video_time = 119f;
-
     public ExhibitDescriptionUI descriptionUI;
 
     public void LateUpdate()
     {
         currentTime = videoPlayer.time;
         
-        if(currentTime > video_time && event_Play == false)
+        // 영상이 끝났는지 체크하고 wav 재생 (한 번만)
+        if (videoPlayer.frame > 0 && videoPlayer.frame >= (long)videoPlayer.frameCount - 1 && event_Play == false)
         {
-            PlayVideoGuideScene("GuideScene6.json","GuideScene6_v.mp3");
+            isVideoEnded = true; // 영상이 끝났음을 표시
             event_Play = true;
+            PlayVideoGuideScene("GuideScene6.json","GuideScene6_v.wav");
+        }
+        else if (videoPlayer.frame < (long)videoPlayer.frameCount - 1)
+        {
+            event_Play = false;
         }
     }
     public void PlayMovie()
     {
+        if (isVideoEnded) // 영상이 끝났으면 아무 동작도 하지 않음
+            return;
+
         Debug.Log("[MoviePlayer] PlayMovie 호출");
 
         if (!hasPlayedOnce)

@@ -66,6 +66,14 @@ public class InputValue : MonoBehaviour
     private const int exhibit2Total = 8;
     private const int exhibit3Total = 7;
 
+    [Header("특정 타겟")]
+    public Transform guideTarget1;
+    public Transform guideTarget2;
+    public Transform guideTarget3;
+    private bool isGuide1Played = false;
+    private bool isGuide2Played = false;
+    private bool isGuide3Played = false;
+
     public ExhibitDescriptionUI descriptionUI; // Inspector에서 할당
 
     void Start()
@@ -147,30 +155,38 @@ public class InputValue : MonoBehaviour
         {
             last_event1_count -= Time.deltaTime;
         }
-        if(last_event1_count < 0)
+        if(isExhibit1Complete && !isGuide1Played && last_event1_count <= 0)
         {
             last_event1_count = 0;
-            PlayGuideScene2("GuideScene2.json","GuideScene2_v.mp3");
+            PlayGuideScene2("GuideScene2.json", "GuideScene2_v.wav");
+            isGuide1Played = true;
+            if(robotControl != null && guideTarget1 != null)
+                robotControl.MoveToGuideTarget(guideTarget1);  // 아래에 새로 정의!
         }
-
         if(isExhibit2Complete == true && last_event2_count > 0)
         {
             last_event2_count -= Time.deltaTime;
         }
-        if(last_event2_count < 0)
+        if(isExhibit2Complete && !isGuide2Played && last_event2_count <= 0)
         {
             last_event2_count = 0;
-            PlayGuideScene2("GuideScene2.json","GuideScene2_v.mp3");
+            PlayGuideScene2("GuideScene2.json", "GuideScene2_v.wav");
+            isGuide2Played = true;
+            if(robotControl != null && guideTarget2 != null)
+                robotControl.MoveToGuideTarget(guideTarget2);
         }
 
         if(isExhibit3Complete == true && last_event3_count > 0)
         {
             last_event3_count -= Time.deltaTime;
         }
-        if(last_event3_count < 0)
+        if(isExhibit3Complete && !isGuide3Played && last_event3_count <= 0)
         {
             last_event3_count = 0;
-            PlayGuideScene2("GuideScene2.json","GuideScene2_v.mp3");
+            PlayGuideScene2("GuideScene2.json", "GuideScene2_v.wav");
+            isGuide3Played = true;
+            if(robotControl != null && guideTarget3 != null)
+                robotControl.MoveToGuideTarget(guideTarget3);
         }
     }
     // 실제 상호작용 처리 함수

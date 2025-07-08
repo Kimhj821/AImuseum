@@ -9,7 +9,7 @@ public class DoorManager : MonoBehaviour
     public Animator door3Anim;
 
     public ExhibitDescriptionUI descriptionUI; // Inspector에서 할당
-
+    private bool isLobby1Played = false;
  
 
     void Start()
@@ -28,22 +28,26 @@ public class DoorManager : MonoBehaviour
             // 우선순위: 3 > 2 > 1 > 기본
             if (inputValue.isDoor3Open == true && inputValue.isLastLook == true)
             {
-                PlayLobbyGuideScene("GuideScene9_Lobby.json", "GuideScene9_Lobby_v.mp3");
+                PlayLobbyGuideScene("GuideScene9_Lobby.json", "GuideScene9_Lobby_v.wav");
             }
             if (inputValue.isDoor3Open == true && inputValue.isLastLook == false)
             {
-                PlayLobbyGuideScene("GuideScene8_Lobby.json", "GuideScene8_Lobby_v.mp3");
+                PlayLobbyGuideScene("GuideScene8_Lobby.json", "GuideScene8_Lobby_v.wav");
                 door3Anim.SetBool("room3open", true);
                 
             }
             if (inputValue.isDoor2Open == true && inputValue.isDoor3Open == false)
             {
-                PlayLobbyGuideScene("GuideScene7_Lobby.json", "GuideScene7_Lobby_v.mp3");
+                PlayLobbyGuideScene("GuideScene7_Lobby.json", "GuideScene7_Lobby_v.wav");
                 door2Anim.SetBool("room2open", true);
             }
             
-            if(inputValue.isDoor3Open == false && inputValue.isDoor2Open == false)
-                PlayLobbyGuideScene("GuideScene1_Lobby.json", "GuideScene1_Lobby_v.mp3");
+            if(inputValue.isDoor3Open == false && inputValue.isDoor2Open == false && !isLobby1Played)
+            {
+                PlayLobbyGuideScene("GuideScene1_Lobby.json", "GuideScene1_Lobby_v.wav");
+                isLobby1Played = true;
+            }
+                
 
         }
     }

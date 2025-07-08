@@ -10,68 +10,50 @@ public class Robot_Control : MonoBehaviour
     public float stopDistance = 2.0f;
     public float rotationSpeed = 5.0f;
     public float startupDelay = 1.0f;
-    public float minFollowDistance = 1.5f; // Inspector에서 조절 가능
+    public float minFollowDistance = 1.5f;
 
-    // Inspector에서 지정할 카메라
     public Camera followCamera;
 
     private NavMeshAgent agent;
     private Animator animator;
     private bool isStartupComplete = false;
 
-    // 모드 관리
     public enum RobotMode { Follow, Explain }
     private RobotMode currentMode = RobotMode.Follow;
 
-    // 설명모드 관리
     private bool isExplaining = false;
     private int currentEventId = -1;
-    private Transform explainTarget; // 설명할 타겟 위치
+    private Transform explainTarget;
 
-    public ExhibitDescriptionUI descriptionUI; // Inspector에서 할당
+    public ExhibitDescriptionUI descriptionUI;
 
     void Start()
     {
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
-        agent.stoppingDistance = stopDistance;
+        if (agent != null)
+            agent.stoppingDistance = stopDistance;
         StartCoroutine(StartupDelayRoutine());
     }
 
     IEnumerator StartupDelayRoutine()
     {
-        Idle_Animation();
+        SetIdle();
         yield return new WaitForSeconds(startupDelay);
         isStartupComplete = true;
     }
 
     void Update()
     {
-        if (!isStartupComplete || player == null) return;
+        if (!isStartupComplete || player == null || followCamera == null)
+            return;
 
-        Camera cam = followCamera;
-        if (cam == null) return;
-
-        Vector3 viewportPos = cam.WorldToViewportPoint(transform.position);
-        bool isVisible =
-            viewportPos.z > 0 &&
-            viewportPos.x > 0 && viewportPos.x < 1 &&
-            viewportPos.y > 0 && viewportPos.y < 1;
-
+        bool isVisible = IsVisibleToCamera();
         switch (currentMode)
         {
             case RobotMode.Follow:
-                if (!isVisible)
-                {
-                    // 시야 밖이면 따라오고, walk 애니메이션 유지
-                    FollowPlayerLogic();
-                }
-                else
-                {
-                    // 시야 안이면 이동 중지 및 idle
-                    agent.isStopped = true;
-                    Idle_Animation();
-                }
+                if (!isVisible) FollowPlayer();
+                else StopAndIdle();
                 break;
             case RobotMode.Explain:
                 ExplainModeLogic();
@@ -79,99 +61,112 @@ public class Robot_Control : MonoBehaviour
         }
     }
 
-    // 플레이어 추적 모드 로직
-    void FollowPlayerLogic()
+    // === 플레이어 추적 ===
+    void FollowPlayer()
     {
-        agent.isStopped = false;
+        if (agent == null) return;
 
-        // 플레이어와의 최소 거리를 유지하며 따라가기 (항상 뒤쪽이동 X)
-        Vector3 directionToPlayer = (player.position - transform.position).normalized;
-        Vector3 targetPos = player.position - directionToPlayer * minFollowDistance;
+        agent.isStopped = false;
+        Vector3 playerBackward = -player.forward.normalized; // 플레이어가 보는 방향의 반대
+        Vector3 targetPos = player.position + playerBackward * minFollowDistance;
         targetPos.y = player.position.y;
 
         agent.SetDestination(targetPos);
-        Walk_Animation();
+        SetWalk();
 
-        // 목적지 도착하면 idle로 전환
         if (!agent.pathPending && agent.remainingDistance <= stopDistance)
-        {
-            agent.isStopped = true;
-            Idle_Animation();
-        }
+            StopAndIdle();
 
-        // Follow 모드에서 플레이어와 멀어지면 순간이동
-        float teleportDistance = 10f; // 순간이동 트리거 거리
-        float distToPlayer = Vector3.Distance(transform.position, player.position);
-        if (distToPlayer > teleportDistance)
+        if (Vector3.Distance(transform.position, player.position) > 10f)
         {
-            // 플레이어와의 minFollowDistance만큼 떨어진 위치로 텔레포트
-            Vector3 spawnPos = player.position - directionToPlayer * minFollowDistance;
-            spawnPos.y = player.position.y;
-            agent.Warp(spawnPos);
-            Idle_Animation();
+            agent.Warp(targetPos);
+            SetIdle();
         }
     }
 
-    // 설명모드 진입 함수 (외부에서 호출)
+    // === 설명모드 진입(가장 가까운 타겟) ===
     public void StartExplainMode(int eventId)
     {
-        if (isExplaining) return; // 설명 중에는 무시
+        if (isExplaining) return;
         currentEventId = eventId;
         isExplaining = true;
         currentMode = RobotMode.Explain;
-
-        // 플레이어 기준 가장 가까운 타겟 저장
-        float minDist = float.MaxValue;
-        Transform nearest = null;
-        for (int i = 0; i < targets.Count; i++)
-        {
-            float dist = Vector3.Distance(player.position, targets[i].position);
-            if (dist < minDist)
-            {
-                minDist = dist;
-                nearest = targets[i];
-            }
-        }
-        explainTarget = nearest;
-        if (explainTarget != null)
-        {
-            agent.SetDestination(explainTarget.position);
-            Walk_Animation();
-        }
+        explainTarget = GetNearestTarget(player.position);
+        MoveToTarget(explainTarget);
     }
 
-    // 설명모드 로직
+    // === 설명모드 진입(특정 타겟) ===
+    public void MoveToGuideTarget(Transform target)
+    {
+        if (target == null) return;
+        currentMode = RobotMode.Explain;
+        isExplaining = true;
+        currentEventId = -1;
+        explainTarget = target;
+        MoveToTarget(target);
+    }
+
+    // === 설명모드 로직 ===
     void ExplainModeLogic()
     {
-        if (explainTarget == null) return;
-        // 타겟 도착 판정
+        if (explainTarget == null || agent == null) return;
+
         if (!agent.pathPending && agent.remainingDistance <= stopDistance)
         {
-            Idle_Animation();
+            StopAndIdle();
             LookAtPlayer();
-            // 설명 시작(한 번만)
+
             if (isExplaining)
             {
                 isExplaining = false;
-                // 설명 텍스트/오디오 재생 등
                 Debug.Log($"[로봇] 이벤트ID {currentEventId} 설명 시작");
-                // 설명 종료시 원래 추적모드로 복귀 (타이밍은 실제 설명 끝나면 호출)
-                // StartCoroutine(EndExplainModeDelay(3f)); // 3초 후 모드 복귀 예시
+                // 실제 설명 시작(오디오, 텍스트 등)
+                // 설명 종료시 EndExplainMode() 호출 필요
             }
         }
     }
 
-    // 외부에서 설명 종료 호출 (설명 끝나면)
+    // === 설명모드 종료 ===
     public void EndExplainMode()
     {
         currentMode = RobotMode.Follow;
-        currentEventId = -1;
-        explainTarget = null;
-        isExplaining = false;
+        ResetExplainState();
         if (descriptionUI != null)
             descriptionUI.ClearDescription();
     }
 
+    // === 타겟 이동 및 애니메이션 ===
+    void MoveToTarget(Transform target)
+    {
+        if (target == null || agent == null) return;
+        agent.isStopped = false;
+        agent.SetDestination(target.position);
+        SetWalk();
+    }
+
+    // === 가장 가까운 타겟 찾기 ===
+    Transform GetNearestTarget(Vector3 pos)
+    {
+        Transform nearest = null;
+        float minDist = float.MaxValue;
+        foreach (var t in targets)
+        {
+            float dist = Vector3.Distance(pos, t.position);
+            if (dist < minDist)
+            {
+                minDist = dist;
+                nearest = t;
+            }
+        }
+        return nearest;
+    }
+
+    // === 카메라에서 보이는지 체크 ===
+    bool IsVisibleToCamera()
+    {
+        Vector3 viewportPos = followCamera.WorldToViewportPoint(transform.position);
+        return viewportPos.z > 0 && viewportPos.x > 0 && viewportPos.x < 1 && viewportPos.y > 0 && viewportPos.y < 1;
+    }
 
     void LookAtPlayer()
     {
@@ -184,20 +179,33 @@ public class Robot_Control : MonoBehaviour
         }
     }
 
-    void Walk_Animation()
+    void SetWalk()
     {
+        if (animator == null) return;
         animator.SetBool("Open_Anim", true);
         animator.SetBool("Walk_Anim", true);
         animator.SetBool("Roll_Anim", false);
     }
-    void Idle_Animation()
+    void SetIdle()
     {
+        if (animator == null) return;
         animator.SetBool("Open_Anim", true);
         animator.SetBool("Walk_Anim", false);
         animator.SetBool("Roll_Anim", false);
     }
+    void StopAndIdle()
+    {
+        if (agent != null) agent.isStopped = true;
+        SetIdle();
+    }
 
-    // 추후 필요시 충돌 처리
+    void ResetExplainState()
+    {
+        currentEventId = -1;
+        explainTarget = null;
+        isExplaining = false;
+    }
+
     void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Player"))

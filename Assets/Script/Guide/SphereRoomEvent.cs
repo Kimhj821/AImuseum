@@ -1,5 +1,8 @@
 using UnityEngine;
 using System.IO;
+using System.Collections.Generic;
+using System.Collections;
+
 public class SphereRoomEvent : MonoBehaviour
 {
     public ExhibitDescriptionUI descriptionUI; // Inspector에서 할당
@@ -12,12 +15,12 @@ public class SphereRoomEvent : MonoBehaviour
         {
             if(num == 1)
             {
-                PlaySphereGuideScene("GuideScene4.json","GuideScene4_v.mp3");
+                StartCoroutine(DelayedPlaySphereGuideScene("GuideScene4.json", "GuideScene4_v.wav"));
                 num = 0;
             }
             if(num == 2)
             {
-                PlaySphereGuideScene("GuideScene5.json","GuideScene5_v.mp3");
+                StartCoroutine(DelayedPlaySphereGuideScene("GuideScene5.json", "GuideScene5_v.wav"));
                 num = 0;
             }
         }
@@ -35,5 +38,11 @@ public class SphereRoomEvent : MonoBehaviour
             descriptionUI.ShowExhibitDescription(jsonPath);
             descriptionUI.PlayExhibitAudio(mp3Path);
         }
+    }
+
+    System.Collections.IEnumerator DelayedPlaySphereGuideScene(string json, string wav)
+    {
+        yield return new WaitForSeconds(1f);
+        PlaySphereGuideScene(json, wav);
     }
 }
